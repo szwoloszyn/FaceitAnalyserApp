@@ -17,6 +17,7 @@ set(PROJECT_SOURCES
         playerstatswindow.cpp
         playerstatswindow.h
         playerstatswindow.ui
+        player.h player.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
