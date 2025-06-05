@@ -17,8 +17,13 @@ public:
     PlayerStatsWindow(const QString& apiKey, QWidget *parent = nullptr);
     ~PlayerStatsWindow();
 
+signals:
+    void readyToView();
+
 private slots:
     void fetchSlot();
+    void requestData();
+    void updateView();
 
 private:
     FaceitApiClient* client;

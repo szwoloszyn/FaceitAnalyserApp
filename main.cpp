@@ -29,11 +29,12 @@ QString loadApiKety(const QString &filename)
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    PlayerStatsWindow w;
+
     qDebug() << "Current working dir:" << QDir::currentPath();
 
     QString apiKey = loadApiKety(PATH_TO_KEY);
     qDebug() << apiKey;
-    return 0;
+    PlayerStatsWindow w(apiKey);
+    w.show();
     return a.exec();
 }
