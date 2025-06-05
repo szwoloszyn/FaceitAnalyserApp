@@ -11,6 +11,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Network)
+
+
 
 set(PROJECT_SOURCES
         main.cpp
@@ -18,12 +21,14 @@ set(PROJECT_SOURCES
         playerstatswindow.h
         playerstatswindow.ui
         player.h player.cpp
+        faceitapiclient.cpp faceitapiclient.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(FaceitAnalyserApp
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        faceitapiclient.h faceitapiclient.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET FaceitAnalyserApp APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
@@ -44,7 +49,7 @@ else()
 endif()
 
 target_link_libraries(FaceitAnalyserApp PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
-
+target_link_libraries(FaceitAnalyserApp PRIVATE Qt${QT_VERSION_MAJOR}::Network)
 set_target_properties(FaceitAnalyserApp PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}

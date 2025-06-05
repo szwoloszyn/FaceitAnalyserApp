@@ -7,6 +7,7 @@
 #include <QDebug>
 #include <QDir>
 
+QString PATH_TO_KEY = "../../key.txt";
 
 QString loadApiKety(const QString &filename)
 {
@@ -31,7 +32,7 @@ int main(int argc, char *argv[])
     PlayerStatsWindow w;
     qDebug() << "Current working dir:" << QDir::currentPath();
 
-    QString apiKey = loadApiKety("../FaceitAnalyserApp/key.txt");
+    QString apiKey = loadApiKety(PATH_TO_KEY);
     qDebug() << apiKey;
     return 0;
     return a.exec();
