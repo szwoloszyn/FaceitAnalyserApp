@@ -18,17 +18,27 @@ public:
     ~PlayerStatsWindow();
 
 signals:
-    void readyToView();
+    void accInfoReady();
+
+    void matchesReady();
 
 private slots:
-    void fetchSlot();
-    void requestData();
+    void fetchAccInfo();
+    void requestAccInfo();
+
+    // TODO IMPLEMENT
+    void requestMatches();
+    void fetchMatches();
+
+    // WARNING old version
     void updateView();
 
 private:
-    FaceitApiClient* client;
+    FaceitApiClient* clientForAccInfo;
+    FaceitApiClient* clientForMatches;
+    QJsonObject accInfoResponse;
+    QJsonObject matchesResponse;
     Player* player;
-    QJsonObject lastResponse;
 
     Ui::PlayerStatsWindow *ui;
 };

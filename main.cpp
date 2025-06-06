@@ -1,4 +1,5 @@
 #include "playerstatswindow.h"
+#include "machine.h"
 
 #include <QApplication>
 #include <QString>
@@ -7,8 +8,11 @@
 #include <QDebug>
 #include <QDir>
 
+#ifdef THINKPAD
+QString PATH_TO_KEY = "../FaceitAnalyserApp/key.txt";
+#else
 QString PATH_TO_KEY = "../../key.txt";
-
+#endif
 QString loadApiKety(const QString &filename)
 {
     QFile file(filename);

@@ -22,6 +22,7 @@ set(PROJECT_SOURCES
         playerstatswindow.ui
         player.h player.cpp
         faceitapiclient.cpp faceitapiclient.h
+        machine.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
