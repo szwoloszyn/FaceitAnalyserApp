@@ -20,6 +20,11 @@ void Player::updateAccInfo(const QJsonObject& acc)
     acc_info.insert("level", lvl);
 }
 
+void Player::updateMatches(const QJsonObject &matches)
+{
+// TODO data needs to be unpacked and saved to object
+}
+
 void Player::print()
 {
     for (QString& key : acc_info.keys()) {

@@ -28,6 +28,7 @@ class Player
 public:
     Player();
     void updateAccInfo(const QJsonObject& acc);
+    void updateMatches(const QJsonObject& matches);
     void print();
 public:
     QMap <QString, QString> acc_info; // <variable name, value>

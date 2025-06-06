@@ -49,8 +49,6 @@ void PlayerStatsWindow::requestAccInfo()
     QString url = "https://open.faceit.com/data/v4/players?nickname=";
     QString nickname = this->ui->nicknameEdit->toPlainText();
     clientForAccInfo->fetchData(url, nickname);
-    QString player_id = player->acc_info.value("player_id");
-
 }
 
 void PlayerStatsWindow::requestMatches()
@@ -58,12 +56,20 @@ void PlayerStatsWindow::requestMatches()
     QString url = "https://open.faceit.com/data/v4/players/" +
             this->player->acc_info.value("player_id") +
             "/games/cs2/stats";
-    // BUG INIFNITE LOOP OF REQUESTS !
     clientForMatches->fetchData(url);
+}
+
+void PlayerStatsWindow::fetchMatches()
+{
+    matchesResponse = clientForMatches->getLastResponse();
+    player->updateMatches(matchesResponse);
+
+    emit matchesReady();
 }
 
 void PlayerStatsWindow::updateView()
 {
+    qDebug() << matchesResponse;
     for (auto it = player->acc_info.constBegin(); it != player->acc_info.constEnd(); ++it) {
         ui->data->setText(ui->data->text() + "\n" + it.key() + " " + it.value());
     }
