@@ -26,12 +26,13 @@ private slots:
     void fetchAccInfo();
     void requestAccInfo();
 
-    // TODO IMPLEMENT
     void requestMatches();
     void fetchMatches();
 
     // WARNING old version
     void updateView();
+
+    void apiErrorCought();
 
 private:
     FaceitApiClient* clientForAccInfo;

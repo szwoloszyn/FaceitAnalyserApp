@@ -28,6 +28,12 @@ PlayerStatsWindow::PlayerStatsWindow(const QString& apiKey, QWidget *parent)
     // matches assigned -> time to print data onto my screen
     connect(this, &PlayerStatsWindow::matchesReady,
             this, &PlayerStatsWindow::updateView);
+
+    // apiError -> print information
+    connect(this->clientForAccInfo, &FaceitApiClient::apiError,
+            this, &PlayerStatsWindow::apiErrorCought);
+    connect(this->clientForMatches, &FaceitApiClient::apiError,
+            this, &PlayerStatsWindow::apiErrorCought);
 }
 
 PlayerStatsWindow::~PlayerStatsWindow()
@@ -46,9 +52,12 @@ void PlayerStatsWindow::fetchAccInfo()
 
 void PlayerStatsWindow::requestAccInfo()
 {
-    QString url = "https://open.faceit.com/data/v4/players?nickname=";
+    QString url = "https://open.faceit.com/data/v4/players";
     QString nickname = this->ui->nicknameEdit->toPlainText();
-    clientForAccInfo->fetchData(url, nickname);
+    QMap<QString, QString> parameters {
+        {"nickname", nickname}
+    };
+    clientForAccInfo->fetchData(url, parameters);
 }
 
 void PlayerStatsWindow::requestMatches()
@@ -56,7 +65,13 @@ void PlayerStatsWindow::requestMatches()
     QString url = "https://open.faceit.com/data/v4/players/" +
             this->player->acc_info.value("player_id") +
             "/games/cs2/stats";
-    clientForMatches->fetchData(url);
+    url = "https://open.faceit.com/data/v4/players/" +
+        this->player->acc_info.value("player_id") +
+        "/stats/cs2";
+    QMap<QString, QString> parameters {
+        {"limit", "10"}
+    };
+    clientForMatches->fetchData(url, parameters);
 }
 
 void PlayerStatsWindow::fetchMatches()
@@ -73,4 +88,9 @@ void PlayerStatsWindow::updateView()
     for (auto it = player->acc_info.constBegin(); it != player->acc_info.constEnd(); ++it) {
         ui->data->setText(ui->data->text() + "\n" + it.key() + " " + it.value());
     }
+}
+
+void PlayerStatsWindow::apiErrorCought()
+{
+    ui->data->setText("invalid nickname");
 }

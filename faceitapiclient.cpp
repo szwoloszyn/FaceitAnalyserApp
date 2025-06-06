@@ -8,9 +8,15 @@ FaceitApiClient::FaceitApiClient(const QString& key, QObject *parent)
 
 }
 
-void FaceitApiClient::fetchData(const QString& urlStr, const QString& nickname)
+void FaceitApiClient::fetchData(const QString& urlStr, const QMap<QString, QString>& params)
 {
-    const QUrl url{urlStr + nickname};
+    qDebug() << urlStr;
+    QUrl url{urlStr};
+    QUrlQuery query;
+    for (QString param : params.keys()) {
+        query.addQueryItem(param, params.value(param));
+    }
+    url.setQuery(query);
     QNetworkRequest request;
     request.setUrl(url);
     //request.setRawHeader("Authorization", "Bearer " + apiKey.toUtf8());
@@ -19,8 +25,7 @@ void FaceitApiClient::fetchData(const QString& urlStr, const QString& nickname)
     currentReply = manager->get(request);
     connect(currentReply, &QNetworkReply::finished, this, &FaceitApiClient::replayReady);
 
-
-    //connect(reply, &QNetworkReply::finished,
+    // connect(reply, &QNetworkReply::finished,
     //        this, &FaceitApiClient::replayReady);
 }
 
@@ -39,6 +44,12 @@ void FaceitApiClient::replayReady()
         }
         currentReply->deleteLater();
         currentReply = nullptr;
+    }
+    else {
+        qDebug() << "STUCK HERE!!";
+        QString errorMsg = QString("Network error: %1").arg(currentReply->errorString());
+        qDebug() << errorMsg;
+        emit apiError(errorMsg);
     }
 }
 

@@ -1,6 +1,7 @@
 #ifndef MACHINE_H
 #define MACHINE_H
 
-#define THINKPAD
+#define PC
+//#define THINKPAD
 
 #endif // MACHINE_H
