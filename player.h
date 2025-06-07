@@ -3,16 +3,13 @@
 
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QJsonArray>
 #include <QString>
 #include <QMap>
 #include <QList>
 
 struct PlayerStats
 {
-
-    QString kills = "x";
-    QString assists = "x";
-    QString deaths = "x";
     QString hs_rate = "x";
     QString adr= "x";
     QString kdr= "x";
@@ -21,8 +18,23 @@ struct PlayerStats
 
 struct MatchStats
 {
+    double adr = 0;
+    double kdr = 0;
+    double kpr = 0;
+    int kills = 0;
+    int assists = 0;
+    int deaths = 0;
 
+    int double_kills = 0;
+    int triple_kills = 0;
+    int quad_kills = 0;
+    int aces = 0;
+    int rounds = 0;
+
+    double hltv = 0;
 };
+
+double calculateHltv(const MatchStats& stats);
 
 class Player
 {
