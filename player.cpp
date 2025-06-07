@@ -40,8 +40,10 @@ void Player::updateMatches(const QJsonObject &matches)
 void Player::print()
 {
     qDebug() << "$" << lifetime_stats.kdr << "$";
+    qDebug() << "$" << lifetime_stats.adr << "$";
+    qDebug() << "$" << lifetime_stats.kills << "$";
     for (QString& key : acc_info.keys()) {
         QString val = acc_info.value(key);
-        //qDebug() << key << " : " << val;
+        qDebug() << key << " : " << val;
     }
 }

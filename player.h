@@ -7,7 +7,6 @@
 #include <QMap>
 
 
-// TODO do it as a map ?
 struct PlayerStats
 {
 
