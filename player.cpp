@@ -11,7 +11,6 @@ void Player::updateAccInfo(const QJsonObject& acc)
     acc_info.insert("nickname", acc.value("nickname").toString());
     acc_info.insert("player_id", acc.value("player_id").toString());
     acc_info.insert("avatar", acc.value("avatar").toString());
-    qDebug() << acc.value("nickname").toString();
 
     auto cs2data = acc.value("games").toObject().value("cs2").toObject();
     QString elo = QString::number(cs2data.value("faceit_elo").toDouble());
@@ -35,6 +34,9 @@ void Player::updateStats(const QJsonObject &stats)
 void Player::updateMatches(const QList<QJsonObject> &matches)
 {
 // TODO data needs to be unpacked and saved to object
+    for (QJsonObject matchesResponse : matches) {
+
+    }
 }
 
 void Player::print()

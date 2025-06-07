@@ -33,7 +33,7 @@ PlayerStatsWindow::PlayerStatsWindow(const QString& apiKey, QWidget *parent)
     // stats assigned -> request matches
     connect(this, &PlayerStatsWindow::statsReady,
             this, &PlayerStatsWindow::requestMatches);
-    // request done -> assign matches to my object
+    // request done -> asking for next batch
     connect(this->clientForMatches, &FaceitApiClient::playerDataReady,
             this, &PlayerStatsWindow::fetchMatchesBatch);
     // matches assigned -> time to print data onto my screen
@@ -60,7 +60,6 @@ PlayerStatsWindow::~PlayerStatsWindow()
 
 void PlayerStatsWindow::fetchAccInfo()
 {
-    //qDebug() << accInfoResponse;
     accInfoResponse = clientForAccInfo->getLastResponse();
     player->updateAccInfo(accInfoResponse);
 
@@ -144,7 +143,7 @@ void PlayerStatsWindow::fetchMatchesBatch()
 {
     matchesResponses.append(clientForMatches->getLastResponse());
 
-    if (remainingMatches > 0) {
+    if (remainingMatches > 0 and offset <= 200) {
         QTimer::singleShot(150, this, &PlayerStatsWindow::requestNextMatchesBatch);
     }
     else {
@@ -165,7 +164,7 @@ void PlayerStatsWindow::updateView()
     // }
     //qDebug() << statsResponse;
     qDebug() << matchesResponses.size();
-
+    // GUI
     for (auto it = player->acc_info.constBegin(); it != player->acc_info.constEnd(); ++it) {
         ui->data->setText(ui->data->text() + "\n" + it.key() + " " + it.value());
     }
@@ -184,6 +183,7 @@ void PlayerStatsWindow::clear()
     delete player;
     player = new Player();
 
+    // GUI
     ui->data->setText("");
 }
 
