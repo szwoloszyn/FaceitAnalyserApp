@@ -4,10 +4,10 @@
 PlayerStatsWindow::PlayerStatsWindow(const QString& apiKey, QWidget *parent)
     : QWidget(parent)
     , clientForAccInfo{new FaceitApiClient{apiKey}}
-    , clientForMatches{new FaceitApiClient{apiKey}}
+    , clientForStats{new FaceitApiClient{apiKey}}
     , player{new Player}
     , accInfoResponse{QJsonObject()}
-    , matchesResponse{QJsonObject()}
+    , statsResponse{QJsonObject()}
     , ui(new Ui::PlayerStatsWindow)
 {
     this->setMinimumSize(400, 300);
@@ -21,18 +21,18 @@ PlayerStatsWindow::PlayerStatsWindow(const QString& apiKey, QWidget *parent)
 
     // player data assigned -> request matches
     connect(this, &PlayerStatsWindow::accInfoReady,
-            this, &PlayerStatsWindow::requestMatches);
+            this, &PlayerStatsWindow::requestStats);
     // request done -> assign matches data to my object
-    connect(this->clientForMatches, &FaceitApiClient::playerDataReady,
-            this, &PlayerStatsWindow::fetchMatches);
+    connect(this->clientForStats, &FaceitApiClient::playerDataReady,
+            this, &PlayerStatsWindow::fetchStats);
     // matches assigned -> time to print data onto my screen
-    connect(this, &PlayerStatsWindow::matchesReady,
+    connect(this, &PlayerStatsWindow::statsReady,
             this, &PlayerStatsWindow::updateView);
 
     // apiError -> print information
     connect(this->clientForAccInfo, &FaceitApiClient::apiError,
             this, &PlayerStatsWindow::apiErrorCought);
-    connect(this->clientForMatches, &FaceitApiClient::apiError,
+    connect(this->clientForStats, &FaceitApiClient::apiError,
             this, &PlayerStatsWindow::apiErrorCought);
 }
 
@@ -43,10 +43,10 @@ PlayerStatsWindow::~PlayerStatsWindow()
 
 void PlayerStatsWindow::fetchAccInfo()
 {
-    qDebug() << accInfoResponse;
+    //qDebug() << accInfoResponse;
     accInfoResponse = clientForAccInfo->getLastResponse();
     player->updateAccInfo(accInfoResponse);
-    player->print();
+
     emit accInfoReady();
 }
 
@@ -60,7 +60,7 @@ void PlayerStatsWindow::requestAccInfo()
     clientForAccInfo->fetchData(url, parameters);
 }
 
-void PlayerStatsWindow::requestMatches()
+void PlayerStatsWindow::requestStats()
 {
     QString url = "https://open.faceit.com/data/v4/players/" +
             this->player->acc_info.value("player_id") +
@@ -69,22 +69,24 @@ void PlayerStatsWindow::requestMatches()
         this->player->acc_info.value("player_id") +
         "/stats/cs2";
     QMap<QString, QString> parameters {
-        {"limit", "10"}
+        {"limit", "5"}
     };
-    clientForMatches->fetchData(url, parameters);
+    clientForStats->fetchData(url, parameters);
 }
 
-void PlayerStatsWindow::fetchMatches()
+void PlayerStatsWindow::fetchStats()
 {
-    matchesResponse = clientForMatches->getLastResponse();
-    player->updateMatches(matchesResponse);
+    statsResponse = clientForStats->getLastResponse();
+    player->updateStats(statsResponse);
 
-    emit matchesReady();
+    emit statsReady();
 }
 
 void PlayerStatsWindow::updateView()
 {
-    qDebug() << matchesResponse;
+    //qDebug() << accInfoResponse;
+    //qDebug() << statsResponse;
+    player->print();
     for (auto it = player->acc_info.constBegin(); it != player->acc_info.constEnd(); ++it) {
         ui->data->setText(ui->data->text() + "\n" + it.key() + " " + it.value());
     }

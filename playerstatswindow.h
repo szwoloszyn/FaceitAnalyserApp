@@ -20,14 +20,14 @@ public:
 signals:
     void accInfoReady();
 
-    void matchesReady();
+    void statsReady();
 
 private slots:
     void fetchAccInfo();
     void requestAccInfo();
 
-    void requestMatches();
-    void fetchMatches();
+    void requestStats();
+    void fetchStats();
 
     // WARNING old version
     void updateView();
@@ -36,9 +36,9 @@ private slots:
 
 private:
     FaceitApiClient* clientForAccInfo;
-    FaceitApiClient* clientForMatches;
+    FaceitApiClient* clientForStats;
     QJsonObject accInfoResponse;
-    QJsonObject matchesResponse;
+    QJsonObject statsResponse;
     Player* player;
 
     Ui::PlayerStatsWindow *ui;

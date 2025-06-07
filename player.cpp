@@ -20,6 +20,18 @@ void Player::updateAccInfo(const QJsonObject& acc)
     acc_info.insert("level", lvl);
 }
 
+void Player::updateStats(const QJsonObject &stats)
+{
+    PlayerStats lifetime;
+    QJsonObject lf_stats = stats.value("lifetime").toObject();
+
+    this->acc_info.insert("number_of_matches", lf_stats.value("Matches").toString());
+
+    this->lifetime_stats.hs_rate = lf_stats.value("Average Headshots %").toString();
+    this->lifetime_stats.adr = lf_stats.value("ADR").toString();
+    this->lifetime_stats.kdr = lf_stats.value("Average K/D Ratio").toString();
+}
+
 void Player::updateMatches(const QJsonObject &matches)
 {
 // TODO data needs to be unpacked and saved to object
@@ -27,8 +39,9 @@ void Player::updateMatches(const QJsonObject &matches)
 
 void Player::print()
 {
+    qDebug() << "$" << lifetime_stats.kdr << "$";
     for (QString& key : acc_info.keys()) {
         QString val = acc_info.value(key);
-        qDebug() << key << " : " << val;
+        //qDebug() << key << " : " << val;
     }
 }

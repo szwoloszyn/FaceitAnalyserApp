@@ -10,12 +10,14 @@
 // TODO do it as a map ?
 struct PlayerStats
 {
-    QString kills;
-    QString assists;
-    QString deaths;
-    QString hs_rate;
-    QString kpd;
-    QString kpr;
+
+    QString kills = "x";
+    QString assists = "x";
+    QString deaths = "x";
+    QString hs_rate = "x";
+    QString adr= "x";
+    QString kdr= "x";
+    QString hltv= "x";
 };
 
 struct MatchStats
@@ -28,7 +30,9 @@ class Player
 public:
     Player();
     void updateAccInfo(const QJsonObject& acc);
+    void updateStats(const QJsonObject& stats);
     void updateMatches(const QJsonObject& matches);
+
     void print();
 public:
     QMap <QString, QString> acc_info; // <variable name, value>
