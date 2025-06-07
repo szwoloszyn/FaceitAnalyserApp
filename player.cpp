@@ -33,36 +33,30 @@ void Player::updateStats(const QJsonObject &stats)
 
 void Player::updateMatches(const QList<QJsonObject> &matchesResponse)
 {
-// TODO data needs to be unpacked and saved to object
-
     for (QJsonObject matchResponse : matchesResponse) {
         QJsonArray matches = matchResponse.value("items").toArray();
 
-        int a = 0;
         for (const QJsonValue& matchVal : matches) {
-            a++;
             QJsonObject match = matchVal.toObject().value("stats").toObject();
 
             MatchStats stats;
-            {
-                stats.adr = match.value("ADR").toString().toDouble();
-                stats.kdr = match.value("K/D Ratio").toString().toDouble();
-                stats.kpr = match.value("K/R Ratio").toString().toDouble();
-                stats.kills = match.value("Kills").toString().toInt();
-                stats.assists = match.value("Assists").toString().toInt();
-                stats.deaths = match.value("Deaths").toString().toInt();
+            stats.adr = match.value("ADR").toString().toDouble();
+            stats.kdr = match.value("K/D Ratio").toString().toDouble();
+            stats.kpr = match.value("K/R Ratio").toString().toDouble();
+            stats.kills = match.value("Kills").toString().toInt();
+            stats.assists = match.value("Assists").toString().toInt();
+            stats.deaths = match.value("Deaths").toString().toInt();
 
-                stats.double_kills = match.value("Double Kills").toString().toInt();
-                stats.triple_kills = match.value("Triple Kills").toString().toInt();
-                stats.quad_kills = match.value("Quadro Kills").toString().toInt();
-                stats.aces = match.value("Penta Kills").toString().toInt();
+            stats.double_kills = match.value("Double Kills").toString().toInt();
+            stats.triple_kills = match.value("Triple Kills").toString().toInt();
+            stats.quad_kills = match.value("Quadro Kills").toString().toInt();
+            stats.aces = match.value("Penta Kills").toString().toInt();
 
-                stats.rounds = match.value("Rounds").toString().toInt();
+            stats.rounds = match.value("Rounds").toString().toInt();
+            stats.hltv = calculateHltv(stats);
+            // TODO put stats into this->match_stats QMap !
 
-                //qDebug() << "matches";
-            }
-            if (a < 2) {
-                stats.hltv = calculateHltv(stats);
+            if (match.value("Match Id").toString() == "1-9627e7da-c06c-435a-a2b8-5ac94a823e1f") {
                 qDebug() << "rounds: " << stats.rounds << " $ "
                          << "kills: " << stats.kills << " $ "
                          << "deaths: " << stats.deaths
@@ -75,6 +69,8 @@ void Player::updateMatches(const QList<QJsonObject> &matchesResponse)
         }
     }
 }
+
+
 
 void Player::print()
 {
@@ -90,7 +86,7 @@ void Player::print()
 double calculateHltv(const MatchStats &stats)
 {
     if (stats.rounds == 0) {
-        //qDebug() << "ups";
+        qDebug() << "rounds not parsed error";
         return 0;
     }
     const double avgKPR = 0.679;
@@ -101,10 +97,10 @@ double calculateHltv(const MatchStats &stats)
     double survivalRating = (double(stats.rounds - stats.deaths) / stats.rounds) / avgSPR;
     int single_kills = stats.kills - (2*stats.double_kills + 3*stats.triple_kills + 4*stats.quad_kills + 5*stats.aces);
     double roundsWithMultipleRating = (double(single_kills + 4*stats.double_kills +
-                                      9*stats.triple_kills + 16*stats.quad_kills +
-                                        25*stats.aces) / stats.rounds) / avgRMK;
-    qDebug() << "killRating: " << killRating;
-    qDebug() << "survRating: " << survivalRating;
-    qDebug() << "multiple: " << roundsWithMultipleRating;
+                                              9*stats.triple_kills + 16*stats.quad_kills +
+                                              25*stats.aces) / stats.rounds) / avgRMK;
+    // qDebug() << "killRating: " << killRating;
+    // qDebug() << "survRating: " << survivalRating;
+    // qDebug() << "multiple: " << roundsWithMultipleRating;
     return (killRating + 0.7*survivalRating + roundsWithMultipleRating) / 2.7;
 }
