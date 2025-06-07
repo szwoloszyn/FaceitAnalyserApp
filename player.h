@@ -5,7 +5,7 @@
 #include <QJsonObject>
 #include <QString>
 #include <QMap>
-
+#include <QList>
 
 struct PlayerStats
 {
@@ -30,7 +30,7 @@ public:
     Player();
     void updateAccInfo(const QJsonObject& acc);
     void updateStats(const QJsonObject& stats);
-    void updateMatches(const QJsonObject& matches);
+    void updateMatches(const QList<QJsonObject>& matches);
 
     void print();
 public:

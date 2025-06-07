@@ -31,15 +31,19 @@ void FaceitApiClient::fetchData(const QString& urlStr, const QMap<QString, QStri
 
 void FaceitApiClient::replayReady()
 {
+    qDebug() << "start";
     if (currentReply->error() == QNetworkReply::NoError) {
         QByteArray responseData = currentReply->readAll();
         QJsonDocument jsonDoc = QJsonDocument::fromJson(responseData);
         if (jsonDoc.isObject()) {
 
             this->lastResponse = jsonDoc.object();
+            qDebug() << "FINE";
             emit playerDataReady(lastResponse);
         }
         else {
+            qDebug() << "STUCK!!";
+            qDebug() << currentReply->errorString();
             emit apiError(currentReply->errorString());
         }
         currentReply->deleteLater();
