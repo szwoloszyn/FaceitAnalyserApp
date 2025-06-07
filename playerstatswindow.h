@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QList>
+#include <QTimer>
 
 #include "player.h"
 #include "faceitapiclient.h"
@@ -34,7 +35,7 @@ private slots:
     void fetchStats();
 
     void requestMatches();
-    void fetchMatches();
+    void fetchMatchesBatch();
 
     // WARNING old version
     void updateView();
@@ -42,6 +43,12 @@ private slots:
     void apiErrorCought();
 
 private:
+    void clear();
+
+    void requestNextMatchesBatch();
+    int remainingMatches = 0;
+    int offset = 0;;
+
     FaceitApiClient* clientForAccInfo;
     FaceitApiClient* clientForStats;
     FaceitApiClient* clientForMatches;
