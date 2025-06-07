@@ -2,6 +2,8 @@
 #define PLAYERSTATSWINDOW_H
 
 #include <QWidget>
+#include <QList>
+
 #include "player.h"
 #include "faceitapiclient.h"
 
@@ -45,7 +47,8 @@ private:
     FaceitApiClient* clientForMatches;
     QJsonObject accInfoResponse;
     QJsonObject statsResponse;
-    QJsonObject matchesResponse;
+    QList<QJsonObject> matchesResponses;
+    //QJsonObject matchesResponse;
     Player* player;
 
     Ui::PlayerStatsWindow *ui;

@@ -9,6 +9,7 @@ PlayerStatsWindow::PlayerStatsWindow(const QString& apiKey, QWidget *parent)
     , player{new Player}
     , accInfoResponse{QJsonObject()}
     , statsResponse{QJsonObject()}
+    , matchesResponses{QList<QJsonObject>{}}
     , ui(new Ui::PlayerStatsWindow)
 {
     this->setMinimumSize(400, 300);
@@ -80,7 +81,7 @@ void PlayerStatsWindow::requestStats()
         "/stats/cs2";
 
     QMap<QString, QString> parameters {
-    //    {"limit", }
+        //{"offset", }
     };
     clientForStats->fetchData(url, parameters);
 }
@@ -95,21 +96,36 @@ void PlayerStatsWindow::fetchStats()
 
 void PlayerStatsWindow::requestMatches()
 {
-    qDebug() << "xx";
     QString url = "https://open.faceit.com/data/v4/players/" +
                   this->player->acc_info.value("player_id") +
                   "/games/cs2/stats";
-    QString limit = player->acc_info.value("number_of_matches");
+    int matchesToGo = this->accInfoResponse.value("number_of_cs2_matches").toInt();
+    int offset = 0;
+    // TODO WHILE LOOP
+    while (matchesToGo > 0 or offset >= 200) {
+        // int limit = (matchesToGo >= 100) ? 100 : matchesToGo;
+        // matchesToGo -= limit;
+        // QMap<QString, QString> parameters {
+        //     {"limit", QString::number(limit)},
+        //     {"offset", QString::number(offset)}
+        // };
+        // clientForMatches->fetchData(url, parameters);
+        // offset += limit;
+    }
+    int limit = 50;
     QMap<QString, QString> parameters {
-        {"limit", "50"}
+        {"limit", QString::number(limit)},
+        {"offset", QString::number(offset)}
     };
     clientForMatches->fetchData(url, parameters);
+
+
 }
 
 void PlayerStatsWindow::fetchMatches()
 {
-    matchesResponse = clientForMatches->getLastResponse();
-    player->updateMatches(matchesResponse);
+    matchesResponses.append(clientForMatches->getLastResponse());
+    //player->updateMatches(matchesResponse);
 
     emit matchesReady();
 }
@@ -118,13 +134,13 @@ void PlayerStatsWindow::updateView()
 {
     //qDebug() << accInfoResponse;
     player->print();
-    if (matchesResponse.isEmpty()) {
+    if (matchesResponses.isEmpty()) {
         qDebug() << "EMPTY";
     }
     else {
-        qDebug() << "ITEMED";
+        qDebug() << "ITEMED" << matchesResponses.size();
     }
-
+    //qDebug() << statsResponse;
     for (auto it = player->acc_info.constBegin(); it != player->acc_info.constEnd(); ++it) {
         ui->data->setText(ui->data->text() + "\n" + it.key() + " " + it.value());
     }

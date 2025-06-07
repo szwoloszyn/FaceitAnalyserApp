@@ -26,6 +26,7 @@ void Player::updateStats(const QJsonObject &stats)
     QJsonObject lf_stats = stats.value("lifetime").toObject();
 
     this->acc_info.insert("number_of_matches", lf_stats.value("Matches").toString());
+    this->acc_info.insert("number_of_cs2_matches", lf_stats.value("Total Matches").toString());
 
     this->lifetime_stats.hs_rate = lf_stats.value("Average Headshots %").toString();
     this->lifetime_stats.adr = lf_stats.value("ADR").toString();
