@@ -56,58 +56,46 @@ void Player::updateMatches(const QList<QJsonObject> &matchesResponse)
             stats.hltv = calculateHltv(stats);
             // WARNING it corrupts match id
             QString match_id = match.value("Match Id").toString();
-            if (match_stats.contains(match_id)) {
+            while (match_stats.contains(match_id)) {
                 match_id += "_nmap";
             }
             this->match_stats.insert(match_id, stats);
 
             // printing one random match for debug
-            if (match.value("Match Id").toString() == "1-7bab85e5-3d81-40d2-9f40-21cb87f671f1") {
-                qDebug() << "rounds: " << stats.rounds << " $ "
-                         << "kills: " << stats.kills << " $ "
-                         << "deaths: " << stats.deaths
-                         << "2x 3x 4x 5x" << stats.double_kills << " " << stats.triple_kills << " " << stats.quad_kills
-                         << "kpr" << stats.kpr
-                         << "map: " << match.value("Map").toString()
-                         << "match id: " << match.value("Match Id").toString();
-                qDebug() << "hltv: " << stats.hltv;
-            }
+            // if (match.value("Match Id").toString() == "1-7bab85e5-3d81-40d2-9f40-21cb87f671f1") {
+            //     qDebug() << "rounds: " << stats.rounds << " $ "
+            //              << "kills: " << stats.kills << " $ "
+            //              << "deaths: " << stats.deaths
+            //              << "2x 3x 4x 5x" << stats.double_kills << " " << stats.triple_kills << " " << stats.quad_kills
+            //              << "kpr" << stats.kpr
+            //              << "map: " << match.value("Map").toString()
+            //              << "match id: " << match.value("Match Id").toString();
+            //     qDebug() << "hltv: " << stats.hltv;
+            // }
         }
     }
 }
 
 void Player::updateLifetimeFromMatches()
 {
-    // BUG for Tomek1357 returns  33 and he has 31 loaded !
-    qDebug() << "min: " << qMin(300,acc_info.value("number_of_cs2_matches").toInt());
-    qDebug() << "LF KDR: " << lifetime_stats.kdr;
-    if (match_stats.size() < qMin(300,acc_info.value("number_of_cs2_matches").toInt())) {
+    if (match_stats.size() < qMin(50,acc_info.value("number_of_cs2_matches").toInt())) {
         qDebug() << match_stats.size() << " not enough matches on input. using default data";
         return;
     }
-    // NOTE I may delete kills & deaths
-    int overallKills = 0;
-    int overallDeaths = 0;
     double overallKDR = 0;
     double overallAdr = 0;
     double overallHltv = 0;
     for (auto stats : match_stats.values()) {
         overallKDR += stats.kdr;
-        overallKills += stats.kills;
-        overallDeaths += stats.deaths;
         overallAdr += stats.adr;
         overallHltv += stats.hltv;
     }
-    qDebug() << "K: " << overallKills << " - D: " << overallDeaths;
-    //double avgKDR = double(overallKills) / double(overallDeaths);
-
-    // TODO rounds values?
     double avgKDR = overallKDR / match_stats.size();
     double avgADR = overallAdr / match_stats.size();
     double avgHLTV = overallHltv / match_stats.size();
-    lifetime_stats.adr = QString::number(avgADR);
-    lifetime_stats.kdr = QString::number(avgKDR);
-    lifetime_stats.hltv = QString::number(avgHLTV);
+    lifetime_stats.adr = QString::number(avgADR, 'f', 2);
+    lifetime_stats.kdr = QString::number(avgKDR, 'f', 2);
+    lifetime_stats.hltv = QString::number(avgHLTV, 'f', 2);
 }
 
 void Player::print() const
@@ -115,6 +103,11 @@ void Player::print() const
     qDebug() << "$" << lifetime_stats.kdr << "$";
     qDebug() << "$" << lifetime_stats.adr << "$";
     qDebug() << "$" << lifetime_stats.hltv << "$";
+    qDebug() << "$" << lifetime_stats.hs_rate << "$";
+    MatchStats a = match_stats.value("1-e36ed649-665a-460a-b668-c7cd1514f37e");
+    qDebug() << "@" << a.kills << "@";
+    qDebug() << "@" << a.assists << "@";
+    qDebug() << "@" << a.hltv << "@";
     for (QString& key : acc_info.keys()) {
         QString val = acc_info.value(key);
         qDebug() << key << " : " << val;

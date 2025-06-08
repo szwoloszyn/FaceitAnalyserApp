@@ -87,7 +87,7 @@ void PlayerStatsWindow::requestStats()
           "/stats/cs2";
 
     QMap<QString, QString> parameters {
-        //{"offset", }
+
     };
     clientForStats->fetchData(url, parameters);
 }
@@ -106,7 +106,13 @@ void PlayerStatsWindow::requestMatches()
                   this->player->acc_info.value("player_id") +
                   "/games/cs2/stats";
     int maxToFetch = MAX_TO_FETCH;
-    int matchesToGo = this->player->acc_info.value("number_of_cs2_matches").toInt();
+    int matchesToGo = 0;
+    if (last50matches) {
+        matchesToGo = qMin(this->player->acc_info.value("number_of_cs2_matches").toInt(), 50);
+    }
+    else {
+        matchesToGo = this->player->acc_info.value("number_of_cs2_matches").toInt();
+    }
     if (matchesToGo > maxToFetch) {
         matchesToGo = maxToFetch;
     }
@@ -129,10 +135,11 @@ void PlayerStatsWindow::requestNextMatchesBatch()
         {"limit", QString::number(limit)},
         {"offset", QString::number(offset)}
     };
+    // DEBUG PRINTS
     qDebug() << "Sending match stats request: limit=" <<
         parameters.value("limit") <<
         ", offset=" << parameters.value("offset");
-
+    qDebug() << url;
     clientForMatches->fetchData(url, parameters);
 
     this->offset += limit;
@@ -156,18 +163,22 @@ void PlayerStatsWindow::fetchMatchesBatch()
 void PlayerStatsWindow::updateView()
 {
     player->print();
-
-    qDebug() << matchesResponses.size();
     // GUI
     for (auto it = player->acc_info.constBegin(); it != player->acc_info.constEnd(); ++it) {
         ui->data->setText(ui->data->text() + "\n" + it.key() + " " + it.value());
     }
+    qDebug() << "FINISHED";
 }
 
 void PlayerStatsWindow::apiErrorCought()
 {
     // GUI
     ui->data->setText("invalid nickname");
+}
+
+void PlayerStatsWindow::changeLast50State()
+{
+    last50matches = !last50matches;
 }
 
 void PlayerStatsWindow::clear()

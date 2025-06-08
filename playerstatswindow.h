@@ -37,17 +37,21 @@ private slots:
     void requestMatches();
     void fetchMatchesBatch();
 
-    // WARNING old version
+    // WARNING debug-only implementation
     void updateView();
 
     void apiErrorCought();
 
+    void changeLast50State();
+
 private:
     void clear();
 
+    bool last50matches = true;
     void requestNextMatchesBatch();
     int remainingMatches = 0;
-    int offset = 0;;
+    int offset = 0;
+
 
     FaceitApiClient* clientForAccInfo;
     FaceitApiClient* clientForStats;
@@ -55,7 +59,6 @@ private:
     QJsonObject accInfoResponse;
     QJsonObject statsResponse;
     QList<QJsonObject> matchesResponses;
-    //QJsonObject matchesResponse;
     Player* player;
 
     Ui::PlayerStatsWindow *ui;

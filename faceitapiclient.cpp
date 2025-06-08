@@ -10,7 +10,6 @@ FaceitApiClient::FaceitApiClient(const QString& key, QObject *parent)
 
 void FaceitApiClient::fetchData(const QString& urlStr, const QMap<QString, QString>& params)
 {
-    qDebug() << urlStr;
     QUrl url{urlStr};
     QUrlQuery query;
     for (QString param : params.keys()) {
