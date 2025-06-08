@@ -10,10 +10,10 @@
 
 struct PlayerStats
 {
-    QString hs_rate = "x";
-    QString adr= "x";
-    QString kdr= "x";
-    QString hltv= "x";
+    QString hs_rate = "N/A";
+    QString adr= "N/A";
+    QString kdr= "N/A";
+    QString hltv= "N/A";
 };
 
 struct MatchStats
@@ -44,11 +44,12 @@ public:
     void updateStats(const QJsonObject& stats);
     void updateMatches(const QList<QJsonObject>& matches);
 
-    void print();
+    void print() const;
 public:
+    void updateLifetimeFromMatches();
     QMap <QString, QString> acc_info; // <variable name, value>
     PlayerStats lifetime_stats;
-    QMap <QString,PlayerStats> match_stats; // <match_id, stats>
+    QMap <QString,MatchStats> match_stats; // <match_id, stats>
 };
 
 #endif // PLAYER_H

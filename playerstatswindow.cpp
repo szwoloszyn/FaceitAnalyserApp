@@ -148,21 +148,15 @@ void PlayerStatsWindow::fetchMatchesBatch()
     }
     else {
         this->player->updateMatches(matchesResponses);
+        this->player->updateLifetimeFromMatches();
         emit matchesReady();
     }
 }
 
 void PlayerStatsWindow::updateView()
 {
-    //qDebug() << accInfoResponse;
-    //player->print();
-    // if (matchesResponses.isEmpty()) {
-    //     qDebug() << "EMPTY";
-    // }
-    // else {
-    //     qDebug() << "ITEMED" << matchesResponses.size();
-    // }
-    //qDebug() << statsResponse;
+    player->print();
+
     qDebug() << matchesResponses.size();
     // GUI
     for (auto it = player->acc_info.constBegin(); it != player->acc_info.constEnd(); ++it) {
@@ -172,6 +166,7 @@ void PlayerStatsWindow::updateView()
 
 void PlayerStatsWindow::apiErrorCought()
 {
+    // GUI
     ui->data->setText("invalid nickname");
 }
 

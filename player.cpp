@@ -35,8 +35,8 @@ void Player::updateMatches(const QList<QJsonObject> &matchesResponse)
 {
     for (QJsonObject matchResponse : matchesResponse) {
         QJsonArray matches = matchResponse.value("items").toArray();
-
         for (const QJsonValue& matchVal : matches) {
+
             QJsonObject match = matchVal.toObject().value("stats").toObject();
 
             MatchStats stats;
@@ -54,9 +54,15 @@ void Player::updateMatches(const QList<QJsonObject> &matchesResponse)
 
             stats.rounds = match.value("Rounds").toString().toInt();
             stats.hltv = calculateHltv(stats);
-            // TODO put stats into this->match_stats QMap !
+            // WARNING it corrupts match id
+            QString match_id = match.value("Match Id").toString();
+            if (match_stats.contains(match_id)) {
+                match_id += "_nmap";
+            }
+            this->match_stats.insert(match_id, stats);
 
-            if (match.value("Match Id").toString() == "1-9627e7da-c06c-435a-a2b8-5ac94a823e1f") {
+            // printing one random match for debug
+            if (match.value("Match Id").toString() == "1-7bab85e5-3d81-40d2-9f40-21cb87f671f1") {
                 qDebug() << "rounds: " << stats.rounds << " $ "
                          << "kills: " << stats.kills << " $ "
                          << "deaths: " << stats.deaths
@@ -70,18 +76,50 @@ void Player::updateMatches(const QList<QJsonObject> &matchesResponse)
     }
 }
 
+void Player::updateLifetimeFromMatches()
+{
+    qDebug() << "LF KDR: " << lifetime_stats.kdr;
+    if (match_stats.size() < qMin(300,acc_info.value("number_of_cs2_matches").toInt())) {
+        qDebug() << match_stats.size() << " not enough matches on input. using default data";
+        return;
+    }
+    // NOTE I may delete kills & deaths
+    int overallKills = 0;
+    int overallDeaths = 0;
+    double overallKDR = 0;
+    double overallAdr = 0;
+    double overallHltv = 0;
+    for (auto stats : match_stats.values()) {
+        overallKDR += stats.kdr;
+        overallKills += stats.kills;
+        overallDeaths += stats.deaths;
+        overallAdr += stats.adr;
+        overallHltv += stats.hltv;
+    }
+    qDebug() << "K: " << overallKills << " - D: " << overallDeaths;
+    //double avgKDR = double(overallKills) / double(overallDeaths);
 
+    // TODO rounds values?
+    double avgKDR = overallKDR / match_stats.size();
+    double avgADR = overallAdr / match_stats.size();
+    double avgHLTV = overallHltv / match_stats.size();
+    lifetime_stats.adr = QString::number(avgADR);
+    lifetime_stats.kdr = QString::number(avgKDR);
+    lifetime_stats.hltv = QString::number(avgHLTV);
+}
 
-void Player::print()
+void Player::print() const
 {
     qDebug() << "$" << lifetime_stats.kdr << "$";
     qDebug() << "$" << lifetime_stats.adr << "$";
-    qDebug() << "$" << lifetime_stats.hs_rate << "$";
+    qDebug() << "$" << lifetime_stats.hltv << "$";
     for (QString& key : acc_info.keys()) {
         QString val = acc_info.value(key);
         qDebug() << key << " : " << val;
     }
 }
+
+
 
 double calculateHltv(const MatchStats &stats)
 {
@@ -99,8 +137,5 @@ double calculateHltv(const MatchStats &stats)
     double roundsWithMultipleRating = (double(single_kills + 4*stats.double_kills +
                                               9*stats.triple_kills + 16*stats.quad_kills +
                                               25*stats.aces) / stats.rounds) / avgRMK;
-    // qDebug() << "killRating: " << killRating;
-    // qDebug() << "survRating: " << survivalRating;
-    // qDebug() << "multiple: " << roundsWithMultipleRating;
     return (killRating + 0.7*survivalRating + roundsWithMultipleRating) / 2.7;
 }
