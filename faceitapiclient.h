@@ -5,7 +5,9 @@
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
+#include <QUrlQuery>
 #include <QJsonObject>
+#include <QJsonDocument>
 #include <QString>
 
 
@@ -14,7 +16,7 @@ class FaceitApiClient : public QObject
     Q_OBJECT
 public:
     explicit FaceitApiClient(const QString& key, QObject *parent = nullptr);
-    void fetchData(const QString& url, const QString& nickname = "");
+    void fetchData(const QString& url, const QMap<QString, QString>& params);
     QJsonObject getLastResponse() const;
 
 signals:

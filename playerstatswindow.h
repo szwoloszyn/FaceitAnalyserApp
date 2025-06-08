@@ -2,6 +2,9 @@
 #define PLAYERSTATSWINDOW_H
 
 #include <QWidget>
+#include <QList>
+#include <QTimer>
+
 #include "player.h"
 #include "faceitapiclient.h"
 
@@ -18,17 +21,45 @@ public:
     ~PlayerStatsWindow();
 
 signals:
-    void readyToView();
+    void accInfoReady();
+
+    void statsReady();
+
+    void matchesReady();
 
 private slots:
-    void fetchSlot();
-    void requestData();
+    void fetchAccInfo();
+    void requestAccInfo();
+
+    void requestStats();
+    void fetchStats();
+
+    void requestMatches();
+    void fetchMatchesBatch();
+
+    // WARNING debug-only implementation
     void updateView();
 
+    void apiErrorCought();
+
+    void changeLast50State();
+
 private:
-    FaceitApiClient* client;
+    void clear();
+
+    bool last50matches = true;
+    void requestNextMatchesBatch();
+    int remainingMatches = 0;
+    int offset = 0;
+
+
+    FaceitApiClient* clientForAccInfo;
+    FaceitApiClient* clientForStats;
+    FaceitApiClient* clientForMatches;
+    QJsonObject accInfoResponse;
+    QJsonObject statsResponse;
+    QList<QJsonObject> matchesResponses;
     Player* player;
-    QJsonObject lastResponse;
 
     Ui::PlayerStatsWindow *ui;
 };
