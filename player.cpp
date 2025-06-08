@@ -78,6 +78,8 @@ void Player::updateMatches(const QList<QJsonObject> &matchesResponse)
 
 void Player::updateLifetimeFromMatches()
 {
+    // BUG for Tomek1357 returns  33 and he has 31 loaded !
+    qDebug() << "min: " << qMin(300,acc_info.value("number_of_cs2_matches").toInt());
     qDebug() << "LF KDR: " << lifetime_stats.kdr;
     if (match_stats.size() < qMin(300,acc_info.value("number_of_cs2_matches").toInt())) {
         qDebug() << match_stats.size() << " not enough matches on input. using default data";
