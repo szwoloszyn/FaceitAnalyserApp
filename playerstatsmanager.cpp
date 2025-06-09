@@ -157,8 +157,8 @@ void PlayerStatsManager::fetchMatchesBatch()
 
 void PlayerStatsManager::updateView()
 {
-    emit allReady();
     player->print();
+    emit allReady();
     // GUI
     // for (auto it = player->acc_info.constBegin(); it != player->acc_info.constEnd(); ++it) {
     //     ui->data->setText(ui->data->text() + "\n" + it.key() + " " + it.value());

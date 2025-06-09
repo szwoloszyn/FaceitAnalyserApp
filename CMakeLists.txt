@@ -53,6 +53,12 @@ else()
     endif()
 endif()
 
+set(RESOURCE_FILES resources.qrc)
+qt6_add_resources(RESOURCES_RCC ${RESOURCE_FILES})
+
+
+target_sources(FaceitAnalyserApp PRIVATE ${RESOURCES_RCC})
+
 target_include_directories(FaceitAnalyserApp PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
 )

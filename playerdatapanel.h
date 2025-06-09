@@ -20,7 +20,7 @@ public:
 
 private:
     void setUpProgressBar(int elo);
-    void setUpProfilePicture(QString picture);
+    void setUpProfilePicture(const QString& picture);
     Ui::PlayerDataPanel *ui;
 };
 
