@@ -19,7 +19,7 @@ public:
     ~MainWindow();
 
 private slots:
-    void request(bool isLast50);
+    void request(QString nickname, bool isLast50);
     void update();
     void updateInvalid();
 private:

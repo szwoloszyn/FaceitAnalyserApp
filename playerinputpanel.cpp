@@ -36,5 +36,6 @@ void PlayerInputPanel::confirm()
     if (ui->last50Box->checkState() == Qt::Checked) {
         isLast50 = true;
     }
-    emit confirmed(isLast50);
+    QString nickname = ui->nickname->displayText();
+    emit confirmed(nickname, isLast50);
 }

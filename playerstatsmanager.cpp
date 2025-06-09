@@ -1,10 +1,10 @@
 #include "playerstatsmanager.h"
-#include "./ui_playerstatsmanager.h"
+
 
 constexpr int MAX_TO_FETCH = 300;
 
-PlayerStatsManager::PlayerStatsManager(const QString& apiKey, QWidget *parent)
-    : QWidget(parent)
+PlayerStatsManager::PlayerStatsManager(const QString& apiKey, QObject *parent)
+    : QObject(parent)
     , clientForAccInfo{new FaceitApiClient{apiKey}}
     , clientForStats{new FaceitApiClient{apiKey}}
     , clientForMatches{new FaceitApiClient{apiKey}}
@@ -12,14 +12,8 @@ PlayerStatsManager::PlayerStatsManager(const QString& apiKey, QWidget *parent)
     , accInfoResponse{QJsonObject()}
     , statsResponse{QJsonObject()}
     , matchesResponses{QList<QJsonObject>{}}
-    , ui(new Ui::PlayerStatsManager)
 {
-    this->setMinimumSize(400, 300);
-    ui->setupUi(this);
     // clicked -> request acc
-    connect(this->ui->confirm, &QPushButton::clicked,
-            this, &PlayerStatsManager::requestAccInfo);
-
     connect(this, &PlayerStatsManager::requestStarted,
             this, &PlayerStatsManager::requestAccInfo);
     // request done -> assign player data to my object
@@ -54,7 +48,6 @@ PlayerStatsManager::PlayerStatsManager(const QString& apiKey, QWidget *parent)
 
 PlayerStatsManager::~PlayerStatsManager()
 {
-    delete ui;
     delete clientForAccInfo;
     delete clientForStats;
     delete clientForMatches;
@@ -69,11 +62,10 @@ void PlayerStatsManager::fetchAccInfo()
     emit accInfoReady();
 }
 
-void PlayerStatsManager::requestAccInfo()
+void PlayerStatsManager::requestAccInfo(QString nickname)
 {
     this->clear();
     QString url = "https://open.faceit.com/data/v4/players";
-    QString nickname = this->ui->nicknameEdit->toPlainText();
     QMap<QString, QString> parameters {
         {"nickname", nickname}
     };
@@ -168,9 +160,9 @@ void PlayerStatsManager::updateView()
     emit allReady();
     player->print();
     // GUI
-    for (auto it = player->acc_info.constBegin(); it != player->acc_info.constEnd(); ++it) {
-        ui->data->setText(ui->data->text() + "\n" + it.key() + " " + it.value());
-    }
+    // for (auto it = player->acc_info.constBegin(); it != player->acc_info.constEnd(); ++it) {
+    //     ui->data->setText(ui->data->text() + "\n" + it.key() + " " + it.value());
+    // }
     qDebug() << "FINISHED";
 }
 
@@ -178,7 +170,7 @@ void PlayerStatsManager::apiErrorCought()
 {
     emit invalidNicknameGiven();
     // GUI
-    ui->data->setText("invalid nickname");
+    //ui->data->setText("invalid nickname");
 }
 
 void PlayerStatsManager::changeLast50State(bool isLast50)
@@ -186,9 +178,9 @@ void PlayerStatsManager::changeLast50State(bool isLast50)
     last50matches = isLast50;
 }
 
-void PlayerStatsManager::startRequest()
+void PlayerStatsManager::startRequest(QString nickname)
 {
-    emit requestStarted();
+    emit requestStarted(nickname);
 }
 
 Player* PlayerStatsManager::getPlayer() const
@@ -205,7 +197,7 @@ void PlayerStatsManager::clear()
     player = new Player();
 
     // GUI
-    ui->data->setText("");
+    //ui->data->setText("");
 }
 
 

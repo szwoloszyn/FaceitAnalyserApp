@@ -16,9 +16,10 @@ PlayerStatsWidget::~PlayerStatsWidget()
     delete ui;
 }
 
-void PlayerStatsWidget::setData(Player *player)
+void PlayerStatsWidget::setData(const Player *player)
 {
     ui->stackedWidget->setCurrentWidget(ui->data);
+    ui->data->setData(player);
 }
 
 void PlayerStatsWidget::setInvalidNickname()
@@ -26,7 +27,8 @@ void PlayerStatsWidget::setInvalidNickname()
     ui->stackedWidget->setCurrentWidget(ui->invalidCnt);
 }
 
-void PlayerStatsWidget::requestData(bool isLast50)
+void PlayerStatsWidget::requestData(QString nickname, bool isLast50)
 {
-    emit dataRequested(isLast50);
+    ui->stackedWidget->setCurrentWidget(ui->empty);
+    emit dataRequested(nickname, isLast50);
 }

@@ -16,14 +16,14 @@ class PlayerStatsWidget : public QWidget
 public:
     explicit PlayerStatsWidget(QWidget *parent = nullptr);
     ~PlayerStatsWidget();
-    void setData(Player* player);
+    void setData(const Player* player);
 
     void setInvalidNickname();
 signals:
-    void dataRequested(bool isLast50);
+    void dataRequested(QString nickname, bool isLast50);
 
 private slots:
-    void requestData(bool isLast50);
+    void requestData(QString nickname, bool isLast50);
 private:
     Ui::PlayerStatsWidget *ui;
 };

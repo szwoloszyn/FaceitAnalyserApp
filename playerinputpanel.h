@@ -19,7 +19,7 @@ public:
     QString text() const;
     void keyPressEvent(QKeyEvent* event) override;
 signals:
-    void confirmed(bool isLast50);
+    void confirmed(QString nickname, bool isLast50);
 private slots:
     void confirm();
 private:

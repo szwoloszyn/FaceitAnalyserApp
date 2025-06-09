@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+#include "player.h"
+
 namespace Ui {
 class PlayerDataPanel;
 }
@@ -14,8 +16,11 @@ class PlayerDataPanel : public QWidget
 public:
     explicit PlayerDataPanel(QWidget *parent = nullptr);
     ~PlayerDataPanel();
+    void setData(const Player* player);
 
 private:
+    void setUpProgressBar(int elo);
+    void setUpProfilePicture(QString picture);
     Ui::PlayerDataPanel *ui;
 };
 

@@ -1,6 +1,7 @@
 #ifndef PLAYERSTATSMANAGER_H
 #define PLAYERSTATSMANAGER_H
 
+#include <QObject>
 #include <QWidget>
 #include <QList>
 #include <QTimer>
@@ -8,24 +9,21 @@
 #include "player.h"
 #include "faceitapiclient.h"
 
-QT_BEGIN_NAMESPACE
-namespace Ui { class PlayerStatsManager; }
-QT_END_NAMESPACE
 
-class PlayerStatsManager : public QWidget
+class PlayerStatsManager : public QObject
 {
     Q_OBJECT
 
 public:
-    PlayerStatsManager(const QString& apiKey, QWidget *parent = nullptr);
+    PlayerStatsManager(const QString& apiKey, QObject *parent = nullptr);
     ~PlayerStatsManager();
 
     void changeLast50State(bool isLast50);
-    void startRequest();
+    void startRequest(QString nickname);
     Player* getPlayer() const;
 
 signals:
-    void requestStarted();
+    void requestStarted(QString nickname);
     void accInfoReady();
     void statsReady();
     void matchesReady();
@@ -35,7 +33,7 @@ signals:
 
 private slots:
     void fetchAccInfo();
-    void requestAccInfo();
+    void requestAccInfo(QString nickname);
 
     void requestStats();
     void fetchStats();
@@ -66,7 +64,5 @@ private:
     QJsonObject statsResponse;
     QList<QJsonObject> matchesResponses;
     Player* player;
-
-    Ui::PlayerStatsManager *ui;
 };
 #endif // PLAYERSTATSMANAGER_H

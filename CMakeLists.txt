@@ -19,7 +19,7 @@ set(PROJECT_SOURCES
         main.cpp
         playerstatsmanager.cpp
         playerstatsmanager.h
-        playerstatsmanager.ui
+        #playerstatsmanager.ui
         player.h player.cpp
         faceitapiclient.cpp faceitapiclient.h
         machine.h
