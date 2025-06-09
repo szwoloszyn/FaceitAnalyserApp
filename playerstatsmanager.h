@@ -20,12 +20,18 @@ public:
     PlayerStatsManager(const QString& apiKey, QWidget *parent = nullptr);
     ~PlayerStatsManager();
 
+    void changeLast50State(bool isLast50);
+    void startRequest();
+    Player* getPlayer() const;
+
 signals:
+    void requestStarted();
     void accInfoReady();
-
     void statsReady();
-
     void matchesReady();
+    void allReady();
+
+    void invalidNicknameGiven();
 
 private slots:
     void fetchAccInfo();
@@ -42,7 +48,7 @@ private slots:
 
     void apiErrorCought();
 
-    void changeLast50State();
+
 
 private:
     void clear();

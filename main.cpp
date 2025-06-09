@@ -2,6 +2,7 @@
 #include "playerinputpanel.h"
 #include "playerdatapanel.h"
 #include "playerstatswidget.h"
+#include "mainwindow.h"
 #include "machine.h"
 
 #include <QApplication>
@@ -42,7 +43,7 @@ int main(int argc, char *argv[])
     QString apiKey = loadApiKety(PATH_TO_KEY);
     qDebug() << apiKey;
     //PlayerStatsManager w(apiKey);
-    PlayerStatsWidget w;
+    MainWindow w{apiKey};
     w.show();
     return a.exec();
 }

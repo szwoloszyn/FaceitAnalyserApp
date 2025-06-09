@@ -19,6 +19,9 @@ PlayerStatsManager::PlayerStatsManager(const QString& apiKey, QWidget *parent)
     // clicked -> request acc
     connect(this->ui->confirm, &QPushButton::clicked,
             this, &PlayerStatsManager::requestAccInfo);
+
+    connect(this, &PlayerStatsManager::requestStarted,
+            this, &PlayerStatsManager::requestAccInfo);
     // request done -> assign player data to my object
     connect(this->clientForAccInfo, &FaceitApiClient::playerDataReady,
             this, &PlayerStatsManager::fetchAccInfo);
@@ -162,6 +165,7 @@ void PlayerStatsManager::fetchMatchesBatch()
 
 void PlayerStatsManager::updateView()
 {
+    emit allReady();
     player->print();
     // GUI
     for (auto it = player->acc_info.constBegin(); it != player->acc_info.constEnd(); ++it) {
@@ -172,13 +176,24 @@ void PlayerStatsManager::updateView()
 
 void PlayerStatsManager::apiErrorCought()
 {
+    emit invalidNicknameGiven();
     // GUI
     ui->data->setText("invalid nickname");
 }
 
-void PlayerStatsManager::changeLast50State()
+void PlayerStatsManager::changeLast50State(bool isLast50)
 {
-    last50matches = !last50matches;
+    last50matches = isLast50;
+}
+
+void PlayerStatsManager::startRequest()
+{
+    emit requestStarted();
+}
+
+Player* PlayerStatsManager::getPlayer() const
+{
+    return player;
 }
 
 void PlayerStatsManager::clear()

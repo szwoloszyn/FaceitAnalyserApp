@@ -7,6 +7,7 @@ PlayerInputPanel::PlayerInputPanel(QWidget *parent)
 {
     ui->setupUi(this);
     connect (ui->confirm, &QPushButton::clicked, this, &PlayerInputPanel::confirm);
+    connect (ui->last50Box, &QCheckBox::checkStateChanged, this, &PlayerInputPanel::confirm);
 }
 
 PlayerInputPanel::~PlayerInputPanel()
@@ -31,5 +32,9 @@ void PlayerInputPanel::keyPressEvent(QKeyEvent *event)
 
 void PlayerInputPanel::confirm()
 {
-    emit confirmed();
+    bool isLast50 = false;
+    if (ui->last50Box->checkState() == Qt::Checked) {
+        isLast50 = true;
+    }
+    emit confirmed(isLast50);
 }

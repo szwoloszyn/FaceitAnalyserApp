@@ -22,9 +22,9 @@
   <widget class="QStackedWidget" name="stackedWidget">
    <property name="geometry">
     <rect>
-     <x>0</x>
+     <x>60</x>
      <y>100</y>
-     <width>541</width>
+     <width>391</width>
      <height>221</height>
     </rect>
    </property>
@@ -54,7 +54,7 @@
     </widget>
    </widget>
   </widget>
-  <widget class="PlayerInputPanel" name="widget" native="true">
+  <widget class="PlayerInputPanel" name="input" native="true">
    <property name="geometry">
     <rect>
      <x>0</x>
