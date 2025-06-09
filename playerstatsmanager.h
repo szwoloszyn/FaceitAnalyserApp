@@ -1,5 +1,5 @@
-#ifndef PLAYERSTATSWINDOW_H
-#define PLAYERSTATSWINDOW_H
+#ifndef PLAYERSTATSMANAGER_H
+#define PLAYERSTATSMANAGER_H
 
 #include <QWidget>
 #include <QList>
@@ -9,16 +9,16 @@
 #include "faceitapiclient.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class PlayerStatsWindow; }
+namespace Ui { class PlayerStatsManager; }
 QT_END_NAMESPACE
 
-class PlayerStatsWindow : public QWidget
+class PlayerStatsManager : public QWidget
 {
     Q_OBJECT
 
 public:
-    PlayerStatsWindow(const QString& apiKey, QWidget *parent = nullptr);
-    ~PlayerStatsWindow();
+    PlayerStatsManager(const QString& apiKey, QWidget *parent = nullptr);
+    ~PlayerStatsManager();
 
 signals:
     void accInfoReady();
@@ -61,6 +61,6 @@ private:
     QList<QJsonObject> matchesResponses;
     Player* player;
 
-    Ui::PlayerStatsWindow *ui;
+    Ui::PlayerStatsManager *ui;
 };
-#endif // PLAYERSTATSWINDOW_H
+#endif // PLAYERSTATSMANAGER_H

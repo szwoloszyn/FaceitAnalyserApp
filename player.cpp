@@ -95,7 +95,7 @@ void Player::updateLifetimeFromMatches()
     double avgHLTV = overallHltv / match_stats.size();
     lifetime_stats.adr = QString::number(avgADR, 'f', 2);
     lifetime_stats.kdr = QString::number(avgKDR, 'f', 2);
-    lifetime_stats.hltv = QString::number(avgHLTV, 'f', 2);
+    lifetime_stats.hltv = QString::number(avgHLTV);//, 'f', 2);
 }
 
 void Player::print() const

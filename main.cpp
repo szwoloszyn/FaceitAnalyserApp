@@ -1,4 +1,7 @@
-#include "playerstatswindow.h"
+#include "playerstatsmanager.h"
+#include "playerinputpanel.h"
+#include "playerdatapanel.h"
+#include "playerstatswidget.h"
 #include "machine.h"
 
 #include <QApplication>
@@ -38,7 +41,8 @@ int main(int argc, char *argv[])
 
     QString apiKey = loadApiKety(PATH_TO_KEY);
     qDebug() << apiKey;
-    PlayerStatsWindow w(apiKey);
+    //PlayerStatsManager w(apiKey);
+    PlayerStatsWidget w;
     w.show();
     return a.exec();
 }

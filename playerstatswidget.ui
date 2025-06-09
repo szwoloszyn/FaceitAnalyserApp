@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PlayerStatsWidget</class>
+ <widget class="QWidget" name="PlayerStatsWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>544</width>
+    <height>357</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>544</width>
+    <height>300</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QStackedWidget" name="stackedWidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>100</y>
+     <width>541</width>
+     <height>221</height>
+    </rect>
+   </property>
+   <widget class="QWidget" name="empty"/>
+   <widget class="PlayerDataPanel" name="data"/>
+   <widget class="QWidget" name="invalidCnt">
+    <widget class="QLabel" name="invalidLabel">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>30</y>
+       <width>301</width>
+       <height>161</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>17</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>INVALID NICKNAME</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="PlayerInputPanel" name="widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>541</width>
+     <height>71</height>
+    </rect>
+   </property>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PlayerInputPanel</class>
+   <extends>QWidget</extends>
+   <header>playerinputpanel.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>PlayerDataPanel</class>
+   <extends>QWidget</extends>
+   <header>playerdatapanel.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
