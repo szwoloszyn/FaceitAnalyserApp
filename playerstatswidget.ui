@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>544</width>
-    <height>357</height>
+    <height>300</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -19,51 +19,37 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QStackedWidget" name="stackedWidget">
-   <property name="geometry">
-    <rect>
-     <x>60</x>
-     <y>100</y>
-     <width>391</width>
-     <height>221</height>
-    </rect>
-   </property>
-   <widget class="QWidget" name="empty"/>
-   <widget class="PlayerDataPanel" name="data"/>
-   <widget class="QWidget" name="invalidCnt">
-    <widget class="QLabel" name="invalidLabel">
-     <property name="geometry">
-      <rect>
-       <x>40</x>
-       <y>30</y>
-       <width>301</width>
-       <height>161</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>17</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>INVALID NICKNAME</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
-     </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="PlayerInputPanel" name="input" native="true"/>
+   </item>
+   <item>
+    <widget class="QStackedWidget" name="stackedWidget">
+     <widget class="QWidget" name="empty"/>
+     <widget class="PlayerDataPanel" name="data"/>
+     <widget class="QWidget" name="invalidCnt">
+      <widget class="QLabel" name="invalidLabel">
+       <property name="geometry">
+        <rect>
+         <x>40</x>
+         <y>30</y>
+         <width>301</width>
+         <height>161</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>17</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>INVALID NICKNAME</string>
+       </property>
+      </widget>
+     </widget>
     </widget>
-   </widget>
-  </widget>
-  <widget class="PlayerInputPanel" name="input" native="true">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>541</width>
-     <height>71</height>
-    </rect>
-   </property>
-  </widget>
+   </item>
+  </layout>
  </widget>
  <customwidgets>
   <customwidget>

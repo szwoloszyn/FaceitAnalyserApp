@@ -35,14 +35,19 @@ void PlayerDataPanel::setUpProgressBar(int elo)
         elo = 2001;
     }
     ui->lvlProgress->setValue(elo);
+    // TODO this aint working
     QPixmap pixmap(":/background_imgs/resources/elobar.png");
     QString style = QString(R"(
         QProgressBar {
             border: 2px solid gray;
             border-radius: 5px;
-
-            background-image: url(:/background_imgs/resources/elobar.png) 0 0 0 0 stretch stretch;
+            background-image: url(:/background_imgs/resources/elobar_scaled.png) 0 0 0 0 stretch stretch;
             text-align: center;
+        }
+        QProgressBar::chunk {
+            background-color: transparent;
+            width: 10px;
+            margin: 0px;
         }
     )");
     ui->lvlProgress->setStyleSheet(style);
@@ -78,6 +83,7 @@ void PlayerDataPanel::setUpLevelPicture(int level)
 {
     QString lvlImg = QString(R"(:/lvl/resources/lvls/%1.png)").arg(level);
     QPixmap pixmap(lvlImg);
-    ui->lvlPic->setScaledContents(true);
-    ui->lvlPic->setPixmap(pixmap);
+    QPixmap scaled = pixmap.scaled(ui->lvlPic->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    //ui->lvlPic->setScaledContents(true);
+    ui->lvlPic->setPixmap(scaled);
 }

@@ -11,6 +11,7 @@ MainWindow::MainWindow(const QString& apiKey, QWidget *parent)
     connect (ui->playerStats, &PlayerStatsWidget::dataRequested, this, &MainWindow::request);
     connect (this->manager, &PlayerStatsManager::allReady, this, &MainWindow::update);
     connect (this->manager, &PlayerStatsManager::invalidNicknameGiven, this, &MainWindow::updateInvalid);
+
 }
 
 MainWindow::~MainWindow()

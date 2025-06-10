@@ -16,5 +16,6 @@
     </qresource>
     <qresource prefix="/background_imgs">
         <file>resources/elobar.png</file>
+        <file>resources/elobar_scaled.png</file>
     </qresource>
 </RCC>
