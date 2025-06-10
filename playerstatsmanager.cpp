@@ -159,18 +159,13 @@ void PlayerStatsManager::updateView()
 {
     player->print();
     emit allReady();
-    // GUI
-    // for (auto it = player->acc_info.constBegin(); it != player->acc_info.constEnd(); ++it) {
-    //     ui->data->setText(ui->data->text() + "\n" + it.key() + " " + it.value());
-    // }
+
     qDebug() << "FINISHED";
 }
 
 void PlayerStatsManager::apiErrorCought()
 {
     emit invalidNicknameGiven();
-    // GUI
-    //ui->data->setText("invalid nickname");
 }
 
 void PlayerStatsManager::changeLast50State(bool isLast50)
@@ -195,9 +190,6 @@ void PlayerStatsManager::clear()
     matchesResponses = QList<QJsonObject>();
     delete player;
     player = new Player();
-
-    // GUI
-    //ui->data->setText("");
 }
 
 

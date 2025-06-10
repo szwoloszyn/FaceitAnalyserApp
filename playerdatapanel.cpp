@@ -23,8 +23,7 @@ void PlayerDataPanel::setData(const Player *player)
 
     int elo = player->acc_info.value("elo").toInt();
     setUpProgressBar(elo);
-    setUpProfilePicture("");
-
+    setUpProfilePicture(player->acc_info.value("avatar"));
 }
 
 void PlayerDataPanel::setUpProgressBar(int elo)
@@ -37,12 +36,31 @@ void PlayerDataPanel::setUpProgressBar(int elo)
 
 void PlayerDataPanel::setUpProfilePicture(const QString& picture)
 {
-    if (picture == "") {
+    if (picture != "") {
+        QUrl imageUrl(picture);
+        QNetworkRequest request(imageUrl);
+        manager = new QNetworkAccessManager(this);
+        QNetworkReply *reply = manager->get(request);
+        connect(reply, &QNetworkReply::finished, this, [=]() {
+            if (reply->error() == QNetworkReply::NoError) {
+                QByteArray imageData = reply->readAll();
+                QPixmap pixmap;
+                pixmap.loadFromData(imageData);
+                qDebug() << "EMMM HELLO?";
+                ui->profilePic->setPixmap(pixmap);
+                return;
+            }
+            else {
+                qDebug() << "SHOULDNT BE HERE";
+            }
+            reply->deleteLater();
+        });
+    }
+    else {
         QPixmap pixmap(":/profile_pic/resources/def_avatar.jpg");
         QPixmap newpixmap(":/lvl/resources/lvls/10.png");
         qDebug() << "%%%" << pixmap.isNull();
-        ui->profilePic->setPixmap(newpixmap);
+        ui->profilePic->setPixmap(pixmap);
         return;
     }
-
 }

@@ -2,7 +2,10 @@
 #define PLAYERDATAPANEL_H
 
 #include <QWidget>
-
+#include <QUrl>
+#include <QNetworkRequest>
+#include <QNetworkReply>
+#include <QPixmap>
 #include "player.h"
 
 namespace Ui {
@@ -21,6 +24,7 @@ public:
 private:
     void setUpProgressBar(int elo);
     void setUpProfilePicture(const QString& picture);
+    QNetworkAccessManager* manager;
     Ui::PlayerDataPanel *ui;
 };
 

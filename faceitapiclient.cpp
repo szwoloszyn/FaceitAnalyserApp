@@ -30,7 +30,6 @@ void FaceitApiClient::replayReady()
         QByteArray responseData = currentReply->readAll();
         QJsonDocument jsonDoc = QJsonDocument::fromJson(responseData);
         if (jsonDoc.isObject()) {
-
             this->lastResponse = jsonDoc.object();
             emit playerDataReady(lastResponse);
         }
@@ -50,6 +49,7 @@ void FaceitApiClient::replayReady()
     }
 }
 
-QJsonObject FaceitApiClient::getLastResponse() const {
+QJsonObject FaceitApiClient::getLastResponse() const
+{
     return lastResponse;
 }

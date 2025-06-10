@@ -1,5 +1,7 @@
 #include "player.h"
 
+const QString MATCHES_WITH_NO_RESPONSE = "10";
+
 Player::Player()
 {
 
@@ -7,7 +9,6 @@ Player::Player()
 
 void Player::updateAccInfo(const QJsonObject& acc)
 {
-
     acc_info.insert("nickname", acc.value("nickname").toString());
     acc_info.insert("player_id", acc.value("player_id").toString());
     acc_info.insert("avatar", acc.value("avatar").toString());
@@ -23,11 +24,17 @@ void Player::updateStats(const QJsonObject &stats)
 {
     PlayerStats lifetime;
     QJsonObject lf_stats = stats.value("lifetime").toObject();
-
     this->acc_info.insert("number_of_matches", lf_stats.value("Matches").toString());
-    this->acc_info.insert("number_of_cs2_matches", lf_stats.value("Total Matches").toString());
+    if (lf_stats.contains("Total Matches")) {
+        this->acc_info.insert("number_of_cs2_matches", lf_stats.value("Total Matches").toString());
+    }
+    else {
+        this->acc_info.insert("number_of_cs2_matches", MATCHES_WITH_NO_RESPONSE);
+    }
     this->lifetime_stats.hs_rate = lf_stats.value("Average Headshots %").toString();
-    this->lifetime_stats.adr = lf_stats.value("ADR").toString();
+    if (lf_stats.contains("ADR")) {
+        this->lifetime_stats.adr = lf_stats.value("ADR").toString();
+    }
     this->lifetime_stats.kdr = lf_stats.value("Average K/D Ratio").toString();
 }
 
@@ -61,17 +68,17 @@ void Player::updateMatches(const QList<QJsonObject> &matchesResponse)
             }
             this->match_stats.insert(match_id, stats);
 
-            // printing one random match for debug
-            // if (match.value("Match Id").toString() == "1-7bab85e5-3d81-40d2-9f40-21cb87f671f1") {
-            //     qDebug() << "rounds: " << stats.rounds << " $ "
-            //              << "kills: " << stats.kills << " $ "
-            //              << "deaths: " << stats.deaths
-            //              << "2x 3x 4x 5x" << stats.double_kills << " " << stats.triple_kills << " " << stats.quad_kills
-            //              << "kpr" << stats.kpr
-            //              << "map: " << match.value("Map").toString()
-            //              << "match id: " << match.value("Match Id").toString();
-            //     qDebug() << "hltv: " << stats.hltv;
-            // }
+            //printing one random match for debug
+            //             if (match.value("Match Id").toString() == "1-0addd094-e685-43ae-908a-47e75cbf4c57/scoreboard") {
+            //                 qDebug() << "rounds: " << stats.rounds << " $ "
+            //                          << "kills: " << stats.kills << " $ "
+            //                          << "deaths: " << stats.deaths
+            //                          << "2x 3x 4x 5x" << stats.double_kills << " " << stats.triple_kills << " " << stats.quad_kills
+            //                          << "kpr" << stats.kpr
+            //                          << "map: " << match.value("Map").toString()
+            //                          << "match id: " << match.value("Match Id").toString();
+            //                 qDebug() << "hltv: " << stats.hltv;
+            //             }
         }
     }
 }
@@ -93,9 +100,15 @@ void Player::updateLifetimeFromMatches()
     double avgKDR = overallKDR / match_stats.size();
     double avgADR = overallAdr / match_stats.size();
     double avgHLTV = overallHltv / match_stats.size();
-    lifetime_stats.adr = QString::number(avgADR, 'f', 2);
-    lifetime_stats.kdr = QString::number(avgKDR, 'f', 2);
-    lifetime_stats.hltv = QString::number(avgHLTV, 'f', 2);
+    if (avgADR > 0) {
+        lifetime_stats.adr = QString::number(avgADR, 'f', 2);
+    }
+    if (avgKDR > 0) {
+        lifetime_stats.kdr = QString::number(avgKDR, 'f', 2);
+    }
+    if (avgHLTV > 0) {
+        lifetime_stats.hltv = QString::number(avgHLTV, 'f', 2);
+    }
 }
 
 void Player::print() const
