@@ -1,6 +1,9 @@
 #include "playerdatapanel.h"
 #include "./ui_playerdatapanel.h"
 
+QString calculateColorForLevel(int elo);
+double calculateCurrentLevelProgress(int elo);
+
 PlayerDataPanel::PlayerDataPanel(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::PlayerDataPanel)
@@ -37,22 +40,21 @@ void PlayerDataPanel::setUpProgressBar(int elo)
     if (elo > 2001) {
         elo = 2001;
     }
-    ui->lvlProgress->setValue(elo);
-    // TODO this aint working
+    ui->lvlProgress->setRange(0,100);
+    ui->lvlProgress->setValue(static_cast<int>(100*calculateCurrentLevelProgress(elo)));
+    QString color = calculateColorForLevel(elo);
     QPixmap pixmap(":/background_imgs/resources/elobar.png");
     QString style = QString(R"(
         QProgressBar {
             border: 2px solid gray;
             border-radius: 5px;
-            background-image: url(:/background_imgs/resources/elobar_scaled.png) 0 0 0 0 stretch stretch;
             text-align: center;
         }
         QProgressBar::chunk {
-            background-color: transparent;
+            background-color: %1;
             width: 10px;
-            margin: 0px;
         }
-    )");
+    )").arg(color);
     ui->lvlProgress->setStyleSheet(style);
 }
 
@@ -89,4 +91,55 @@ void PlayerDataPanel::setUpLevelPicture(int level)
     QPixmap scaled = pixmap.scaled(ui->lvlPic->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     //ui->lvlPic->setScaledContents(true);
     ui->lvlPic->setPixmap(scaled);
+}
+
+QString calculateColorForLevel(int elo)
+{
+    if (elo < 501) {
+       return "#eeeeee"; // gray
+    }
+    if (elo < 901) {
+        return "#19ca00"; // green darker
+        return "#1ce400"; // green
+    }
+    if (elo < 1531) {
+        return "#ffc800"; // yellow
+    }
+    if (elo < 2001) {
+        return "#ff6309"; // orange
+    }
+    return "#fe1f00"; // red
+}
+
+double calculateCurrentLevelProgress(int elo)
+{
+    if (elo >= 2001) {
+        return 1.0;
+    }
+    struct LevelRange {
+        int level;
+        int eloMin;
+        int eloMax;
+    };
+
+    std::vector<LevelRange> levels = {
+        {1, 100, 500},
+        {2, 501, 750},
+        {3, 751, 900},
+        {4, 901, 1050},
+        {5, 1051, 1200},
+        {6, 1201, 1350},
+        {7, 1351, 1530},
+        {8, 1531, 1750},
+        {9, 1751, 2000},
+    };
+
+    for (const auto& level : levels) {
+        if (elo >= level.eloMin && elo <= level.eloMax) {
+            double progress = static_cast<double>(elo - level.eloMin) / (level.eloMax - level.eloMin);
+            return progress;
+        }
+    }
+
+    return 0.0;
 }
