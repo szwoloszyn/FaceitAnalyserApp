@@ -24,6 +24,9 @@ void PlayerDataPanel::setData(const Player *player)
     int elo = player->acc_info.value("elo").toInt();
     setUpProgressBar(elo);
     setUpProfilePicture(player->acc_info.value("avatar"));
+
+    int level = player->acc_info.value("level").toInt();
+    setUpLevelPicture(level);
 }
 
 void PlayerDataPanel::setUpProgressBar(int elo)
@@ -32,6 +35,17 @@ void PlayerDataPanel::setUpProgressBar(int elo)
         elo = 2001;
     }
     ui->lvlProgress->setValue(elo);
+    QPixmap pixmap(":/background_imgs/resources/elobar.png");
+    QString style = QString(R"(
+        QProgressBar {
+            border: 2px solid gray;
+            border-radius: 5px;
+
+            background-image: url(:/background_imgs/resources/elobar.png) 0 0 0 0 stretch stretch;
+            text-align: center;
+        }
+    )");
+    ui->lvlProgress->setStyleSheet(style);
 }
 
 void PlayerDataPanel::setUpProfilePicture(const QString& picture)
@@ -46,21 +60,24 @@ void PlayerDataPanel::setUpProfilePicture(const QString& picture)
                 QByteArray imageData = reply->readAll();
                 QPixmap pixmap;
                 pixmap.loadFromData(imageData);
-                qDebug() << "EMMM HELLO?";
                 ui->profilePic->setPixmap(pixmap);
                 return;
-            }
-            else {
-                qDebug() << "SHOULDNT BE HERE";
             }
             reply->deleteLater();
         });
     }
     else {
         QPixmap pixmap(":/profile_pic/resources/def_avatar.jpg");
-        QPixmap newpixmap(":/lvl/resources/lvls/10.png");
-        qDebug() << "%%%" << pixmap.isNull();
+        ui->lvlPic->setScaledContents(true);
         ui->profilePic->setPixmap(pixmap);
         return;
     }
+}
+
+void PlayerDataPanel::setUpLevelPicture(int level)
+{
+    QString lvlImg = QString(R"(:/lvl/resources/lvls/%1.png)").arg(level);
+    QPixmap pixmap(lvlImg);
+    ui->lvlPic->setScaledContents(true);
+    ui->lvlPic->setPixmap(pixmap);
 }

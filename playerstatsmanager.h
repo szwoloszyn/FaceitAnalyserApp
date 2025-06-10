@@ -41,7 +41,7 @@ private slots:
     void requestMatches();
     void fetchMatchesBatch();
 
-    // WARNING debug-only implementation
+    // TODO change its name
     void updateView();
 
     void apiErrorCought();

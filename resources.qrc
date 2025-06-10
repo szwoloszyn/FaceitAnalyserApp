@@ -14,4 +14,7 @@
         <file>resources/lvls/8.png</file>
         <file>resources/lvls/9.png</file>
     </qresource>
+    <qresource prefix="/background_imgs">
+        <file>resources/elobar.png</file>
+    </qresource>
 </RCC>

@@ -7,7 +7,7 @@ PlayerInputPanel::PlayerInputPanel(QWidget *parent)
 {
     ui->setupUi(this);
     connect (ui->confirm, &QPushButton::clicked, this, &PlayerInputPanel::confirm);
-    // TO BE CHANGED BACK
+    // TODO CHANGE BACK
     //connect (ui->last50Box, &QCheckBox::checkStateChanged, this, &PlayerInputPanel::confirm);
     connect (ui->last50Box, &QCheckBox::stateChanged, this, &PlayerInputPanel::confirm);
 }

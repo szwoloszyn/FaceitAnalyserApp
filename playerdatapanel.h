@@ -24,6 +24,7 @@ public:
 private:
     void setUpProgressBar(int elo);
     void setUpProfilePicture(const QString& picture);
+    void setUpLevelPicture(int level);
     QNetworkAccessManager* manager;
     Ui::PlayerDataPanel *ui;
 };
