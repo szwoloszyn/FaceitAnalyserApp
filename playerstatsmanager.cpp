@@ -115,6 +115,7 @@ void PlayerStatsManager::requestMatches()
 
     this->remainingMatches = matchesToGo;
     this->offset = 0;
+    qDebug() << "robimy kubusiaReq: " << remainingMatches;
     requestNextMatchesBatch();
 }
 
