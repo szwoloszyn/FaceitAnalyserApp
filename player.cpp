@@ -27,7 +27,6 @@ void Player::updateStats(const QJsonObject &stats)
 
     PlayerStats lifetime;
     QJsonObject lf_stats = stats.value("lifetime").toObject();
-
     this->acc_info.insert("number_of_matches", lf_stats.value("Matches").toString());
     if (lf_stats.contains("Total Matches")) {
         this->acc_info.insert("number_of_cs2_matches", lf_stats.value("Total Matches").toString());
@@ -97,7 +96,6 @@ void Player::updateLifetimeFromMatches()
     double overallAdr = 0;
     double overallHltv = 0;
     for (auto stats : match_stats.values()) {
-        qDebug() << "---> " << stats.adr;
         overallKDR += stats.kdr;
         overallAdr += stats.adr;
         overallHltv += stats.hltv;
