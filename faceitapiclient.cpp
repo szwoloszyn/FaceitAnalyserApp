@@ -10,6 +10,7 @@ FaceitApiClient::FaceitApiClient(const QString& key, QObject *parent)
 
 void FaceitApiClient::fetchData(const QString& urlStr, const QMap<QString, QString>& params)
 {
+
     QUrl url{urlStr};
     QUrlQuery query;
     for (QString param : params.keys()) {
@@ -26,11 +27,11 @@ void FaceitApiClient::fetchData(const QString& urlStr, const QMap<QString, QStri
 
 void FaceitApiClient::replayReady()
 {
+
     if (currentReply->error() == QNetworkReply::NoError) {
         QByteArray responseData = currentReply->readAll();
         QJsonDocument jsonDoc = QJsonDocument::fromJson(responseData);
         if (jsonDoc.isObject()) {
-
             this->lastResponse = jsonDoc.object();
             emit playerDataReady(lastResponse);
         }

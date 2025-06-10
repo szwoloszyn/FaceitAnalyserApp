@@ -21,6 +21,7 @@ void Player::updateAccInfo(const QJsonObject& acc)
 
 void Player::updateStats(const QJsonObject &stats)
 {
+    qDebug() << "robimy kubusiaUPT: ";
     PlayerStats lifetime;
     QJsonObject lf_stats = stats.value("lifetime").toObject();
 

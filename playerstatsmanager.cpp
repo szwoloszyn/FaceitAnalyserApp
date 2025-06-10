@@ -89,6 +89,7 @@ void PlayerStatsManager::requestStats()
 
 void PlayerStatsManager::fetchStats()
 {
+
     statsResponse = clientForStats->getLastResponse();
     player->updateStats(statsResponse);
 
