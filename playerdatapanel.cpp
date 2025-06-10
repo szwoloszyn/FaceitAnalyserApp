@@ -21,6 +21,9 @@ void PlayerDataPanel::setData(const Player *player)
     ui->HLTV->setText(player->lifetime_stats.hltv);
     ui->elo->setText(player->acc_info.value("elo") + " ELO");
 
+    QString matchesLabel = QString(R"(%1 played %2 matches on Faceit)").arg(player->acc_info.value("nickname"), player->acc_info.value("number_of_matches"));
+    ui->matchesNum->setText(matchesLabel);
+
     int elo = player->acc_info.value("elo").toInt();
     setUpProgressBar(elo);
     setUpProfilePicture(player->acc_info.value("avatar"));

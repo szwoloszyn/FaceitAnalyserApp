@@ -125,7 +125,7 @@ void PlayerStatsManager::requestNextMatchesBatch()
     QString url = "https://open.faceit.com/data/v4/players/" +
                   this->player->acc_info.value("player_id") +
                   "/games/cs2/stats";
-    int limit = qMin(remainingMatches, 100);
+    int limit = 100;//qMin(remainingMatches, 100);
     QMap<QString, QString> parameters {
         {"limit", QString::number(limit)},
         {"offset", QString::number(offset)}

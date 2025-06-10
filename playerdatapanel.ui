@@ -100,9 +100,21 @@
      <height>41</height>
     </rect>
    </property>
+   <property name="minimumSize">
+    <size>
+     <width>341</width>
+     <height>41</height>
+    </size>
+   </property>
    <layout class="QHBoxLayout" name="statsNames">
     <item>
      <widget class="QLabel" name="HLTV_name">
+      <property name="minimumSize">
+       <size>
+        <width>109</width>
+        <height>39</height>
+       </size>
+      </property>
       <property name="font">
        <font>
         <pointsize>18</pointsize>
@@ -118,6 +130,12 @@
     </item>
     <item>
      <widget class="QLabel" name="KDR_name">
+      <property name="minimumSize">
+       <size>
+        <width>109</width>
+        <height>39</height>
+       </size>
+      </property>
       <property name="font">
        <font>
         <pointsize>18</pointsize>
@@ -133,6 +151,12 @@
     </item>
     <item>
      <widget class="QLabel" name="ADR_name">
+      <property name="minimumSize">
+       <size>
+        <width>109</width>
+        <height>39</height>
+       </size>
+      </property>
       <property name="font">
        <font>
         <pointsize>18</pointsize>
@@ -157,6 +181,12 @@
      <height>61</height>
     </rect>
    </property>
+   <property name="minimumSize">
+    <size>
+     <width>341</width>
+     <height>61</height>
+    </size>
+   </property>
    <property name="font">
     <font>
      <pointsize>18</pointsize>
@@ -165,6 +195,12 @@
    <layout class="QHBoxLayout" name="stats">
     <item>
      <widget class="QLabel" name="KDR">
+      <property name="minimumSize">
+       <size>
+        <width>109</width>
+        <height>59</height>
+       </size>
+      </property>
       <property name="font">
        <font>
         <pointsize>18</pointsize>
@@ -180,6 +216,12 @@
     </item>
     <item>
      <widget class="QLabel" name="HLTV">
+      <property name="minimumSize">
+       <size>
+        <width>109</width>
+        <height>59</height>
+       </size>
+      </property>
       <property name="font">
        <font>
         <pointsize>18</pointsize>
@@ -195,6 +237,12 @@
     </item>
     <item>
      <widget class="QLabel" name="ADR">
+      <property name="minimumSize">
+       <size>
+        <width>109</width>
+        <height>59</height>
+       </size>
+      </property>
       <property name="font">
        <font>
         <pointsize>18</pointsize>
@@ -213,9 +261,9 @@
   <widget class="QLabel" name="matchesNum">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>20</x>
      <y>100</y>
-     <width>381</width>
+     <width>371</width>
      <height>41</height>
     </rect>
    </property>
