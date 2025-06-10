@@ -9,7 +9,6 @@ Player::Player()
 
 void Player::updateAccInfo(const QJsonObject& acc)
 {
-
     acc_info.insert("nickname", acc.value("nickname").toString());
     acc_info.insert("player_id", acc.value("player_id").toString());
     acc_info.insert("avatar", acc.value("avatar").toString());
@@ -19,12 +18,10 @@ void Player::updateAccInfo(const QJsonObject& acc)
     QString lvl = QString::number(cs2data.value("skill_level").toDouble());
     acc_info.insert("elo", elo);
     acc_info.insert("level", lvl);
-
 }
 
 void Player::updateStats(const QJsonObject &stats)
 {
-
     PlayerStats lifetime;
     QJsonObject lf_stats = stats.value("lifetime").toObject();
     this->acc_info.insert("number_of_matches", lf_stats.value("Matches").toString());

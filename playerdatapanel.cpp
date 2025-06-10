@@ -24,7 +24,6 @@ void PlayerDataPanel::setData(const Player *player)
     int elo = player->acc_info.value("elo").toInt();
     setUpProgressBar(elo);
     setUpProfilePicture(player->acc_info.value("avatar"));
-
 }
 
 void PlayerDataPanel::setUpProgressBar(int elo)
@@ -37,15 +36,12 @@ void PlayerDataPanel::setUpProgressBar(int elo)
 
 void PlayerDataPanel::setUpProfilePicture(const QString& picture)
 {
-    qDebug() << "AV: " << picture;
     if (picture != "") {
-        qDebug() << "AV: " << picture;
         QUrl imageUrl(picture);
         QNetworkRequest request(imageUrl);
         manager = new QNetworkAccessManager(this);
         QNetworkReply *reply = manager->get(request);
         connect(reply, &QNetworkReply::finished, this, [=]() {
-            qDebug() << "AV: " << picture;
             if (reply->error() == QNetworkReply::NoError) {
                 QByteArray imageData = reply->readAll();
                 QPixmap pixmap;
@@ -67,5 +63,4 @@ void PlayerDataPanel::setUpProfilePicture(const QString& picture)
         ui->profilePic->setPixmap(pixmap);
         return;
     }
-
 }
