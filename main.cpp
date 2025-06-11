@@ -2,6 +2,7 @@
 #include "playerinputpanel.h"
 #include "playerdatapanel.h"
 #include "playerstatswidget.h"
+#include "matchinputpanel.h"
 #include "mainwindow.h"
 #include "machine.h"
 
@@ -43,6 +44,9 @@ int main(int argc, char *argv[])
     QString apiKey = loadApiKey(PATH_TO_KEY);
     qDebug() << apiKey;
     //PlayerStatsManager w(apiKey);
+    // MatchInputPanel panel;
+    // panel.show();
+    // return a.exec();
     MainWindow w{apiKey};
     w.show();
     return a.exec();

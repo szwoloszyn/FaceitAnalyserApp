@@ -2,6 +2,7 @@
 #define MATCHINPUTPANEL_H
 
 #include <QWidget>
+#include <QKeyEvent>
 
 namespace Ui {
 class MatchInputPanel;
