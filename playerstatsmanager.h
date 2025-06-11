@@ -19,21 +19,21 @@ public:
     ~PlayerStatsManager();
 
     void changeLast50State(bool isLast50);
-    void startRequest(QString nickname);
+    void startRequest(const QString& nickname);
     Player* getPlayer() const;
 
 signals:
-    void requestStarted(QString nickname);
+    void requestStarted(const QString& nickname);
     void accInfoReady();
     void statsReady();
     void matchesReady();
     void allReady();
 
-    void invalidNicknameGiven();
+    void invalidRequest(const QString& error);
 
 private slots:
     void fetchAccInfo();
-    void requestAccInfo(QString nickname);
+    void requestAccInfo(const QString& nickname);
 
     void requestStats();
     void fetchStats();
@@ -44,7 +44,7 @@ private slots:
     // TODO change its name
     void updateView();
 
-    void apiErrorCought();
+    void apiErrorCought(const QString& error);
 
 
 

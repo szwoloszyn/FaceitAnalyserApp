@@ -21,7 +21,7 @@ public:
 private slots:
     void request(QString nickname, bool isLast50);
     void update();
-    void updateInvalid();
+    void updateInvalid(const QString& error);
 private:
     Ui::MainWindow *ui;
     PlayerStatsManager* manager;

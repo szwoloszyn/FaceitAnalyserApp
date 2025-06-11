@@ -18,7 +18,7 @@ public:
     ~PlayerStatsWidget();
     void setData(const Player* player);
 
-    void setInvalidNickname();
+    void setErrorOnCall(const QString& error);
 signals:
     void dataRequested(QString nickname, bool isLast50);
 
