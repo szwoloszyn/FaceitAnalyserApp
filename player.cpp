@@ -45,7 +45,13 @@ void Player::updateMatches(const QList<QJsonObject> &matchesResponse)
         for (const QJsonValue& matchVal : matches) {
 
             QJsonObject match = matchVal.toObject().value("stats").toObject();
-
+            if (match.value("Match Id").toString() == "1-79ff1945-3580-42ea-94dd-8b52c2b42021") {
+                qDebug() << match;
+                if (match.contains("Score") and match.contains("Map")) {
+                    qDebug() << "YEAEAA";
+                    // TODO parse these values & get map_pic from JSON
+                }
+            }
             MatchStats stats;
             stats.adr = match.value("ADR").toString().toDouble();
             stats.kdr = match.value("K/D Ratio").toString().toDouble();

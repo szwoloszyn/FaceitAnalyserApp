@@ -32,6 +32,9 @@ struct MatchStats
     int rounds = 0;
 
     double hltv = 0;
+
+    QString score = "N/A";
+    QString mapPic = "N/A";
 };
 
 double calculateHltv(const MatchStats& stats);
