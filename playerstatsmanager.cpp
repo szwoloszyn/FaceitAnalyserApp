@@ -35,7 +35,7 @@ PlayerStatsManager::PlayerStatsManager(const QString& apiKey, QObject *parent)
             this, &PlayerStatsManager::fetchMatchesBatch);
     // matches assigned -> time to print data onto my screen
     connect(this, &PlayerStatsManager::matchesReady,
-            this, &PlayerStatsManager::updateView);
+            this, &PlayerStatsManager::reportReadiness);
 
     // apiError -> print information
     connect(this->clientForAccInfo, &FaceitApiClient::apiError,
@@ -155,7 +155,7 @@ void PlayerStatsManager::fetchMatchesBatch()
     }
 }
 
-void PlayerStatsManager::updateView()
+void PlayerStatsManager::reportReadiness()
 {
     player->print();
     emit allReady();

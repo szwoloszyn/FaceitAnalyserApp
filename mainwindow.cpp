@@ -23,7 +23,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::request(QString nickname, bool isLast50)
+void MainWindow::request(const QString& nickname, bool isLast50)
 {
     manager->changeLast50State(isLast50);
     manager->startRequest(nickname);

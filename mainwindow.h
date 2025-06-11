@@ -19,7 +19,7 @@ public:
     ~MainWindow();
 
 private slots:
-    void request(QString nickname, bool isLast50);
+    void request(const QString& nickname, bool isLast50);
     void update();
     void updateInvalid(const QString& error);
 

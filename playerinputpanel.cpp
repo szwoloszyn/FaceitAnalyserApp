@@ -6,6 +6,8 @@ PlayerInputPanel::PlayerInputPanel(QWidget *parent)
     , ui(new Ui::PlayerInputPanel)
 {
     ui->setupUi(this);
+    ui->nickname->setPlaceholderText("insert nickname here");
+    ui->nickname->setText("");
     connect (ui->confirm, &QPushButton::clicked, this, &PlayerInputPanel::confirm);
     // TODO do I need it ?
     //connect (ui->last50Box, &QCheckBox::checkStateChanged, this, &PlayerInputPanel::confirm);
