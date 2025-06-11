@@ -10,7 +10,7 @@ MainWindow::MainWindow(const QString& apiKey, QWidget *parent)
     ui->stackedWidget->setCurrentWidget(ui->playerStats);
     connect (ui->playerStats, &PlayerStatsWidget::dataRequested, this, &MainWindow::request);
     connect (this->manager, &PlayerStatsManager::allReady, this, &MainWindow::update);
-    connect (this->manager, &PlayerStatsManager::invalidNicknameGiven, this, &MainWindow::updateInvalid);
+    connect (this->manager, &PlayerStatsManager::invalidRequest, this, &MainWindow::updateInvalid);
 
 }
 
@@ -30,7 +30,7 @@ void MainWindow::update()
     ui->playerStats->setData(manager->getPlayer());
 }
 
-void MainWindow::updateInvalid()
+void MainWindow::updateInvalid(const QString& error)
 {
-    ui->playerStats->setInvalidNickname();
+    ui->playerStats->setErrorOnCall(error);
 }

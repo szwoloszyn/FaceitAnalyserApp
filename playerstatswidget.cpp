@@ -22,8 +22,9 @@ void PlayerStatsWidget::setData(const Player *player)
     ui->data->setData(player);
 }
 
-void PlayerStatsWidget::setInvalidNickname()
+void PlayerStatsWidget::setErrorOnCall(const QString& error)
 {
+    ui->invalidLabel->setText(error);
     ui->stackedWidget->setCurrentWidget(ui->invalidCnt);
 }
 

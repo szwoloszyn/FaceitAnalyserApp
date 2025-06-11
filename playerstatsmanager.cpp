@@ -62,7 +62,7 @@ void PlayerStatsManager::fetchAccInfo()
     emit accInfoReady();
 }
 
-void PlayerStatsManager::requestAccInfo(QString nickname)
+void PlayerStatsManager::requestAccInfo(const QString& nickname)
 {
     this->clear();
     QString url = "https://open.faceit.com/data/v4/players";
@@ -163,9 +163,9 @@ void PlayerStatsManager::updateView()
     qDebug() << "FINISHED";
 }
 
-void PlayerStatsManager::apiErrorCought()
+void PlayerStatsManager::apiErrorCought(const QString& error)
 {
-    emit invalidNicknameGiven();
+    emit invalidRequest(error);
 }
 
 void PlayerStatsManager::changeLast50State(bool isLast50)
@@ -173,7 +173,7 @@ void PlayerStatsManager::changeLast50State(bool isLast50)
     last50matches = isLast50;
 }
 
-void PlayerStatsManager::startRequest(QString nickname)
+void PlayerStatsManager::startRequest(const QString& nickname)
 {
     emit requestStarted(nickname);
 }
