@@ -24,6 +24,7 @@ void PlayerStatsWidget::setData(const Player *player)
 
 void PlayerStatsWidget::setErrorOnCall(const QString& error)
 {
+    ui->invalidLabel->setAlignment(Qt::AlignHCenter);
     ui->invalidLabel->setText(error);
     ui->stackedWidget->setCurrentWidget(ui->invalidCnt);
 }
