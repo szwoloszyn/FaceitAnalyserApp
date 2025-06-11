@@ -12,6 +12,10 @@ MainWindow::MainWindow(const QString& apiKey, QWidget *parent)
     connect (this->manager, &PlayerStatsManager::allReady, this, &MainWindow::update);
     connect (this->manager, &PlayerStatsManager::invalidRequest, this, &MainWindow::updateInvalid);
 
+    connect(this->ui->actionExit, &QAction::triggered, this, &MainWindow::close);
+    connect(this->ui->actionPlayer_stats, &QAction::triggered, this, &MainWindow::pageToPlayer);
+    connect(this->ui->actionMatch_stats, &QAction::triggered, this, &MainWindow::pageToMatch);
+
 }
 
 MainWindow::~MainWindow()
@@ -33,4 +37,14 @@ void MainWindow::update()
 void MainWindow::updateInvalid(const QString& error)
 {
     ui->playerStats->setErrorOnCall(error);
+}
+
+void MainWindow::pageToPlayer()
+{
+    ui->stackedWidget->setCurrentWidget(ui->playerStats);
+}
+
+void MainWindow::pageToMatch()
+{
+    ui->stackedWidget->setCurrentWidget(ui->matchStats);
 }
