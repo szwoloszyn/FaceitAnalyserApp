@@ -5,7 +5,7 @@
 FaceitAnalyserApp is a C++/Qt6 **GUI application**. It fetches and displays player statistics from [Faceit](www.faceit.com), an esports platform popular in CS2 as an alternative to official in-game matchmaking.
 - Users can analyse player's CS2 statistics.
 - Requires a `nickname` and optionally `match id` or `matchroom link` to generate output.
-- Not that since the application fetches CS2 data only, any Faceit account with no CS2 matches will be treated as invalid input - there is no data to analyse.
+- Not that since the application retrieved CS2 data only, any Faceit account with no CS2 matches will be treated as invalid input - there is no data to analyse.
 
 ## Features
 
@@ -27,7 +27,10 @@ FaceitAnalyserApp is a C++/Qt6 **GUI application**. It fetches and displays play
 ## Usage
 
 ### API FACEIT KEY
-- ToDo
+- In order to use the app you need to generate your own Faceit Data Api Key. 
+Faceit for developers is avaible at https://developers.faceit.com/.
+- Application expects to found `.faceit_api_key.txt` in `$HOME` directory.
+- It can be easily changed in `main.cpp` file - `QString PATH_TO_KEY` variable
 
 ### Compilation (using [CMake](https://cmake.org/documentation/))
 - Install [Qt library](https://doc.qt.io/qt-6/get-and-install-qt.html) on your device.
@@ -46,4 +49,29 @@ cmake --build .
 *Note that `qtpaths6 --qt-version` will not always exist on your device, especially if you installed Qt library along with Qt Creator through wizard, you might be forced to look for the files manually*
 
 ### Detailed application overview
-- Default page contains input panel (put your nickname there) and last 50 checkbox - meaning statistics for last 50 matches only. Request is generated every time you push OK button, press `Return` on your keyboard or change checkbox state.
+##### 1. GUI 
+- Default (Player) page contains **input panel** (put your nickname there) and **last 50 checkbox** (statistics for last 50 matches only). Api request is generated every time you push OK button, press `Return` on your keyboard or change checkbox state.
+- Match page contains **input panel** (put matchroom link there). Generated output will display match details and statistics for the given player. Note that match page operates on data retrieved from player page, so you need to define the player first, and then provide matchroom in which he played.
+- You can switch between the pages from menu bar in `View` tab.
+
+##### 2. data and calculations
+- While hltv.org service now uses HLTV 2.0 rating (which better reflects player impact) this application calculates the `HLTV 1.0` rating instead, as the formula for the newer version isn't publicly available. The calculation follows these rules:
+```
+HLTV 1.0 = (KillRating + 0.7*SurvivalRating + RoundsWithMultipleKillsRating) / 2.7
+
+KillRating = (Kills/Rounds)/AverageKPR
+SurvivalRating = ((Rounds-Deaths)/Rounds)/AverageSPR
+RoundsWithMultipleKillsRating = ((1K + 4*2K + 9*3K + 16*4K + 25*5K)/Rounds)/AverageRMK
+
+AverageKPR = 0.679 (average kills per round)
+AverageSPR = 0.317 (average survived rounds per round)
+AverageRMK = 1.277 (average value calculated from rounds with multiple kills: (1K + 4*2K + 9*3K + 16*4K + 25*5K)/Rounds)
+
+1K = Number of rounds with single kill
+2K = Number of rounds with double kill
+3K = Number of rounds with triple kill
+4K = Number of rounds with quadro kill
+5K = Number of rounds with penta kill (an ace)
+```
+- an avarageX values are constants that were specifically chosen 
+so that avarage rating among player would be equal to 1.0
