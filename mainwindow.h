@@ -2,7 +2,6 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QString>
 
 #include "playerstatsmanager.h"
 
@@ -29,6 +28,10 @@ private slots:
 private:
     Ui::MainWindow *ui;
     PlayerStatsManager* manager;
+
+private:
+    MainWindow(const MainWindow&) = delete;
+    MainWindow& operator=(const MainWindow&) = delete;
 };
 
 #endif // MAINWINDOW_H

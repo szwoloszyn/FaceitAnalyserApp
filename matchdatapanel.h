@@ -27,6 +27,10 @@ public:
 private:
     Ui::MatchDataPanel *ui;
     QNetworkAccessManager* manager;
+
+private:
+    MatchDataPanel(const MatchDataPanel&) = delete;
+    MatchDataPanel& operator=(const MatchDataPanel&) = delete;
 };
 
 #endif // MATCHDATAPANEL_H

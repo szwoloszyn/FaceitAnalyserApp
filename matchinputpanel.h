@@ -25,6 +25,10 @@ private slots:
 
 private:
     Ui::MatchInputPanel *ui;
+
+private:
+    MatchInputPanel(const MatchInputPanel&) = delete;
+    MatchInputPanel& operator=(const MatchInputPanel&) = delete;
 };
 
 #endif // MATCHINPUTPANEL_H

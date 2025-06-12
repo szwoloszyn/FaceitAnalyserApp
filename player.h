@@ -57,6 +57,10 @@ public:
     QMap <QString, QString> acc_info; // <variable name, value>
     PlayerStats lifetime_stats;
     QMap <QString,MatchStats> match_stats; // <match_id, stats>
+
+private:
+    Player(const Player&) = delete;
+    Player& operator=(const Player&) = delete;
 };
 
 #endif // PLAYER_H

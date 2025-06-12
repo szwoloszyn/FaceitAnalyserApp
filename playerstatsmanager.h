@@ -1,7 +1,6 @@
 #ifndef PLAYERSTATSMANAGER_H
 #define PLAYERSTATSMANAGER_H
 
-#include <QObject>
 #include <QWidget>
 #include <QList>
 #include <QTimer>
@@ -63,5 +62,9 @@ private:
     QJsonObject statsResponse;
     QList<QJsonObject> matchesResponses;
     Player* player;
+
+private:
+    PlayerStatsManager(const PlayerStatsManager&) = delete;
+    PlayerStatsManager& operator=(const PlayerStatsManager&) = delete;
 };
 #endif // PLAYERSTATSMANAGER_H

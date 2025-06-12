@@ -6,6 +6,7 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QPixmap>
+
 #include "player.h"
 
 namespace Ui {
@@ -27,6 +28,10 @@ private:
     void setUpLevelPicture(int level);
     QNetworkAccessManager* manager;
     Ui::PlayerDataPanel *ui;
+
+private:
+    PlayerDataPanel(const PlayerDataPanel&) = delete;
+    PlayerDataPanel& operator=(const PlayerDataPanel&) = delete;
 };
 
 #endif // PLAYERDATAPANEL_H
