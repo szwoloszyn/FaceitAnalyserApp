@@ -1,5 +1,6 @@
 #include "player.h"
 
+// WARNING THIS ISNT FULLY RIGHT - JUST SETTING UPPER LIMIT
 const QString MATCHES_WITH_NO_RESPONSE = "10";
 
 Player::Player()
@@ -43,7 +44,6 @@ void Player::updateMatches(const QList<QJsonObject> &matchesResponse)
     for (QJsonObject matchResponse : matchesResponse) {
         QJsonArray matches = matchResponse.value("items").toArray();
         for (const QJsonValue& matchVal : matches) {
-
             QJsonObject match = matchVal.toObject().value("stats").toObject();
             MatchStats stats;
             stats.adr = match.value("ADR").toString().toDouble();
@@ -77,19 +77,6 @@ void Player::updateMatches(const QList<QJsonObject> &matchesResponse)
                                       match.value("Rounds").toString());
 
             this->match_stats.insert(match_id, stats);
-
-            //printing one random match for debug
-            if (match.value("Match Id").toString() == "1-79ff1945-3580-42ea-94dd-8b52c2b42021") {
-                qDebug() << match;
-                qDebug() << "rounds: " << stats.rounds << " $ "
-                         << "kills: " << stats.kills << " $ "
-                         << "deaths: " << stats.deaths
-                         << "2x 3x 4x 5x" << stats.double_kills << " " << stats.triple_kills << " " << stats.quad_kills
-                         << "kpr" << stats.kpr
-                         << "map: " << match.value("Map").toString()
-                         << "match id: " << match.value("Match Id").toString();
-                qDebug() << "hltv: " << stats.hltv;
-            }
         }
     }
 }
@@ -97,7 +84,7 @@ void Player::updateMatches(const QList<QJsonObject> &matchesResponse)
 void Player::updateLifetimeFromMatches()
 {
     if (match_stats.size() < qMin(50,acc_info.value("number_of_cs2_matches").toInt())) {
-        qDebug() << match_stats.size() << " not enough matches on input. using default data";
+        qWarning() << match_stats.size() << " not enough matches on input. using default data";
         return;
     }
     double overallKDR = 0;
@@ -144,7 +131,7 @@ void Player::print() const
 double calculateHltv(const MatchStats &stats)
 {
     if (stats.rounds == 0) {
-        qDebug() << "rounds not parsed error";
+        qWarning() << "rounds not parsed error";
         return 0;
     }
     const double avgKPR = 0.679;

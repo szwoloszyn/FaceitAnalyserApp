@@ -8,7 +8,7 @@
 #include "mainwindow.h"
 
 
-QString PATH_TO_KEY = "../../key.txt";
+QString PATH_TO_KEY = QDir::homePath() + "/.faceit_api_key.txt";
 
 QString loadApiKey(const QString &filename)
 {
@@ -29,11 +29,10 @@ QString loadApiKey(const QString &filename)
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    qDebug() << "Current working dir:" << QDir::currentPath();
 
+    qDebug() << QDir::homePath();
+    QApplication a(argc, argv);
     QString apiKey = loadApiKey(PATH_TO_KEY);
-    qDebug() << apiKey;
     MainWindow w{apiKey};
     w.show();
     return a.exec();

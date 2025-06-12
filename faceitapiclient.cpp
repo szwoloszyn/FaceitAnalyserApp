@@ -34,15 +34,12 @@ void FaceitApiClient::replayReady()
             emit playerDataReady(lastResponse);
         }
         else {
-            qDebug() << "ERROR1";
-            qDebug() << currentReply->errorString();
             emit apiError(currentReply->errorString());
         }
         currentReply->deleteLater();
         currentReply = nullptr;
     }
     else {
-        qDebug() << "ERROR2";
         QString errorMsg;
         QNetworkReply::NetworkError error = currentReply->error();
         switch (error)
@@ -64,16 +61,13 @@ void FaceitApiClient::replayReady()
                 break;
             default:
                 int httpStatus = currentReply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-                qDebug() << "!!! " << httpStatus << " !!!";
                 if (httpStatus == 400) {
                     errorMsg = "Unknown Error\nMake sure your\napi key is valid";
                     break;
                 }
-                qDebug() <<QString("Network error: %1").arg(currentReply->errorString());
                 errorMsg = "Unknown error";
                 break;
         }
-        qDebug() << errorMsg;
         emit apiError(errorMsg);
     }
 }

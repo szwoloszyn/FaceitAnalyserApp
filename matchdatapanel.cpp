@@ -33,7 +33,7 @@ void MatchDataPanel::setUpScore(const MatchStats& match)
     score.remove(" ");
     QStringList scores = score.split(u'/');
     if (scores.size() != 2) {
-        qDebug() << QString(R"(ERROR, %1 scores instead of 2)").arg(scores.size());
+        qWarning() << QString(R"(ERROR, %1 scores instead of 2)").arg(scores.size());
         ui->scoreValue->setText("N/A");
         return;
     }
@@ -69,8 +69,7 @@ void MatchDataPanel::setUpMapPicture(const MatchStats &match)
             ui->mapValue->setPixmap(pixmap);
             return;
         }
-        qWarning() << "TF HAPPENED";
+        ui->mapValue->setText(match.mapName);
         reply->deleteLater();
     });
-
 }

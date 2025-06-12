@@ -75,9 +75,6 @@ void PlayerStatsManager::requestAccInfo(const QString& nickname)
 void PlayerStatsManager::requestStats()
 {
     QString url = "https://open.faceit.com/data/v4/players/" +
-                  this->player->acc_info.value("player_id") +
-                  "/games/cs2/stats";
-    url = "https://open.faceit.com/data/v4/players/" +
           this->player->acc_info.value("player_id") +
           "/stats/cs2";
 
@@ -130,11 +127,6 @@ void PlayerStatsManager::requestNextMatchesBatch()
         {"limit", QString::number(limit)},
         {"offset", QString::number(offset)}
     };
-    // DEBUG PRINTS
-    qDebug() << "Sending match stats request: limit=" <<
-        parameters.value("limit") <<
-        ", offset=" << parameters.value("offset");
-    qDebug() << url;
     clientForMatches->fetchData(url, parameters);
 
     this->offset += limit;
@@ -157,10 +149,7 @@ void PlayerStatsManager::fetchMatchesBatch()
 
 void PlayerStatsManager::reportReadiness()
 {
-    player->print();
     emit allReady();
-
-    qDebug() << "FINISHED";
 }
 
 void PlayerStatsManager::apiErrorCought(const QString& error)
