@@ -2,7 +2,7 @@
 
 ## Overview
 
-FaceitAnalyserApp is a C++/Qt6 **GUI application**. It fetches and displays player statistics from [Faceit](www.faceit.com), an esports platform popular in CS2 as an alternative to official in-game matchmaking.
+FaceitAnalyserApp is a C++/Qt6 **GUI application**. It fetches and displays player statistics from [Faceit](www.faceit.com), an esports platform popular in CS2 as an alternative to official in-game matchmaking. It uses faceit api key that can be obtained by anyone with no limits *(Generating own api key explained later on)*
 - Users can analyse player's CS2 statistics.
 - Requires a `nickname` and optionally `match id` or `matchroom link` to generate output.
 - Not that since the application retrieved CS2 data only, any Faceit account with no CS2 matches will be treated as invalid input - there is no data to analyse.
@@ -54,7 +54,7 @@ cmake --build .
 - Match page contains **input panel** (put matchroom link there). Generated output will display match details and statistics for the given player. Note that match page operates on data retrieved from player page, so you need to define the player first, and then provide matchroom in which he played.
 - You can switch between the pages from menu bar in `View` tab.
 
-##### 2. data and calculations
+##### 2. DATA AND CALCULATIONS
 - While hltv.org service now uses HLTV 2.0 rating (which better reflects player impact) this application calculates the `HLTV 1.0` rating instead, as the formula for the newer version isn't publicly available. The calculation follows these rules:
 ```
 HLTV 1.0 = (KillRating + 0.7*SurvivalRating + RoundsWithMultipleKillsRating) / 2.7
