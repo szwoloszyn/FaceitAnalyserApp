@@ -40,6 +40,5 @@ void MatchInputPanel::keyPressEvent(QKeyEvent* event)
 
 void MatchInputPanel::confirm()
 {
-    qDebug() << this->text();
     emit confirmed(this->text());
 }
