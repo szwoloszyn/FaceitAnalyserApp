@@ -7,7 +7,6 @@ PlayerStatsWidget::PlayerStatsWidget(QWidget *parent)
 {
     ui->setupUi(this);
     ui->stackedWidget->setCurrentWidget(ui->empty);
-
     connect (this->ui->input, &PlayerInputPanel::confirmed, this, &PlayerStatsWidget::requestData);
 }
 
@@ -29,7 +28,15 @@ void PlayerStatsWidget::setErrorOnCall(const QString& error)
     ui->stackedWidget->setCurrentWidget(ui->invalidCnt);
 }
 
-void PlayerStatsWidget::requestData(QString nickname, bool isLast50)
+bool PlayerStatsWidget::isAllValid() const
+{
+    if (ui->stackedWidget->currentWidget() == ui->data) {
+        return true;
+    }
+    return false;
+}
+
+void PlayerStatsWidget::requestData(const QString& nickname, bool isLast50)
 {
     ui->stackedWidget->setCurrentWidget(ui->empty);
     emit dataRequested(nickname, isLast50);

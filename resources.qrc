@@ -18,4 +18,7 @@
         <file>resources/elobar.png</file>
         <file>resources/elobar_scaled.png</file>
     </qresource>
+    <qresource prefix="/maps">
+        <file>resources/maps.json</file>
+    </qresource>
 </RCC>

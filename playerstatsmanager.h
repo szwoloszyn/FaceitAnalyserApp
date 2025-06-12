@@ -41,8 +41,7 @@ private slots:
     void requestMatches();
     void fetchMatchesBatch();
 
-    // TODO change its name
-    void updateView();
+    void reportReadiness();
 
     void apiErrorCought(const QString& error);
 

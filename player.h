@@ -7,6 +7,7 @@
 #include <QString>
 #include <QMap>
 #include <QList>
+#include <QFile>
 
 struct PlayerStats
 {
@@ -32,10 +33,16 @@ struct MatchStats
     int rounds = 0;
 
     double hltv = 0;
+
+    bool isWon = true;
+    QString score = "N/A";
+    QString mapName = "N/A";
+    QString mapPic = "N/A";
 };
 
 double calculateHltv(const MatchStats& stats);
-
+QJsonObject getJsonFromFile(const QString& filepath);
+bool validateWin(const QString& roundsWon, const QString& totalRounds);
 class Player
 {
 public:

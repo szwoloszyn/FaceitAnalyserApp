@@ -19,11 +19,13 @@ public:
     void setData(const Player* player);
 
     void setErrorOnCall(const QString& error);
+
+    bool isAllValid() const;
 signals:
-    void dataRequested(QString nickname, bool isLast50);
+    void dataRequested(const QString& nickname, bool isLast50);
 
 private slots:
-    void requestData(QString nickname, bool isLast50);
+    void requestData(const QString& nickname, bool isLast50);
 private:
     Ui::PlayerStatsWidget *ui;
 };

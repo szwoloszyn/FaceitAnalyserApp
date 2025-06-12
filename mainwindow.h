@@ -19,9 +19,13 @@ public:
     ~MainWindow();
 
 private slots:
-    void request(QString nickname, bool isLast50);
+    void requestPlayer(const QString& nickname, bool isLast50);
+    void requestMatch(const QString& match_id);
     void update();
     void updateInvalid(const QString& error);
+
+    void pageToPlayer();
+    void pageToMatch();
 private:
     Ui::MainWindow *ui;
     PlayerStatsManager* manager;
