@@ -19,6 +19,8 @@ public:
     void setData(const Player* player);
 
     void setErrorOnCall(const QString& error);
+
+    bool isAllValid() const;
 signals:
     void dataRequested(const QString& nickname, bool isLast50);
 

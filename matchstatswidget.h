@@ -2,6 +2,7 @@
 #define MATCHSTATSWIDGET_H
 
 #include <QWidget>
+#include "player.h"
 
 namespace Ui {
 class MatchStatsWidget;
@@ -15,6 +16,13 @@ public:
     explicit MatchStatsWidget(QWidget *parent = nullptr);
     ~MatchStatsWidget();
 
+    void setData(const MatchStats& match);
+    void setCustomError(const QString& error);
+    void setErrorFromPlayer();
+signals:
+    void dataRequested(const QString& match_id);
+private slots:
+    void requestData(const QString& match_id);
 private:
     Ui::MatchStatsWidget *ui;
 };

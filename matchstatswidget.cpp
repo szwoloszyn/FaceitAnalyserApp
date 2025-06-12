@@ -7,11 +7,39 @@ MatchStatsWidget::MatchStatsWidget(QWidget *parent)
 {
     ui->setupUi(this);
     ui->input->show();
+    ui->stackedWidget->setCurrentWidget(ui->empty);
 
-    ui->stackedWidget->setCurrentWidget(ui->data);
+    connect(ui->input, &MatchInputPanel::confirmed, this, &MatchStatsWidget::requestData);
 }
 
 MatchStatsWidget::~MatchStatsWidget()
 {
     delete ui;
+}
+
+void MatchStatsWidget::setData(const MatchStats &match)
+{
+    ui->stackedWidget->setCurrentWidget(ui->data);
+    // TODO WRITE THIS METHOD
+    //ui->data->setData(match);
+}
+
+void MatchStatsWidget::setCustomError(const QString &error)
+{
+    ui->invalid->setAlignment(Qt::AlignLeft);
+    ui->invalid->setText(error);
+    ui->stackedWidget->setCurrentWidget(ui->invalidCnt);
+}
+
+void MatchStatsWidget::setErrorFromPlayer()
+{
+    ui->invalid->setAlignment(Qt::AlignLeft);
+    ui->invalid->setText("input valid nickname first");
+    ui->stackedWidget->setCurrentWidget(ui->invalidCnt);
+}
+
+void MatchStatsWidget::requestData(const QString &match_id)
+{
+    ui->stackedWidget->setCurrentWidget(ui->empty);
+    emit dataRequested(match_id);
 }
