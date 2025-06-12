@@ -45,13 +45,6 @@ void Player::updateMatches(const QList<QJsonObject> &matchesResponse)
         for (const QJsonValue& matchVal : matches) {
 
             QJsonObject match = matchVal.toObject().value("stats").toObject();
-            if (match.value("Match Id").toString() == "1-79ff1945-3580-42ea-94dd-8b52c2b42021") {
-                qDebug() << match;
-                if (match.contains("Score") and match.contains("Map")) {
-                    qDebug() << "YEAEAA";
-                    // TODO parse these values & get map_pic from JSON
-                }
-            }
             MatchStats stats;
             stats.adr = match.value("ADR").toString().toDouble();
             stats.kdr = match.value("K/D Ratio").toString().toDouble();
@@ -65,6 +58,9 @@ void Player::updateMatches(const QList<QJsonObject> &matchesResponse)
             stats.quad_kills = match.value("Quadro Kills").toString().toInt();
             stats.aces = match.value("Penta Kills").toString().toInt();
 
+            stats.score = match.value("Score").toString();
+            stats.mapName = match.value("Map").toString();
+
             stats.rounds = match.value("Rounds").toString().toInt();
             stats.hltv = calculateHltv(stats);
             // WARNING it corrupts match id
@@ -72,6 +68,11 @@ void Player::updateMatches(const QList<QJsonObject> &matchesResponse)
             while (match_stats.contains(match_id)) {
                 match_id += "_nmap";
             }
+            QJsonObject mapsJson = getJsonFromFile(":/maps/resources/maps.json");
+            if (mapsJson.contains(stats.mapName)) {
+                stats.mapPic = mapsJson.value(stats.mapName).toString();
+            }
+
             this->match_stats.insert(match_id, stats);
 
             //printing one random match for debug
@@ -127,6 +128,7 @@ void Player::print() const
     qDebug() << "@" << a.kills << "@";
     qDebug() << "@" << a.assists << "@";
     qDebug() << "@" << a.hltv << "@";
+    qDebug() << "@" << a.mapPic << "@";
     for (QString& key : acc_info.keys()) {
         QString val = acc_info.value(key);
         qDebug() << key << " : " << val;
@@ -152,4 +154,28 @@ double calculateHltv(const MatchStats &stats)
                                               9*stats.triple_kills + 16*stats.quad_kills +
                                               25*stats.aces) / stats.rounds) / avgRMK;
     return (killRating + 0.7*survivalRating + roundsWithMultipleRating) / 2.7;
+}
+
+QJsonObject getJsonFromFile(const QString &filepath)
+{
+    QFile file{filepath};
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qWarning() << "Failed to open resource file!";
+        return QJsonObject{};
+    }
+    QByteArray data = file.readAll();
+    file.close();
+
+    QJsonParseError parseError;
+    QJsonDocument doc = QJsonDocument::fromJson(data, &parseError);
+
+    if (parseError.error != QJsonParseError::NoError) {
+        qWarning() << "parse error: " << parseError.errorString();
+        return QJsonObject{};
+    }
+    if (!doc.isObject()) {
+        qWarning() << "not an object";
+        return QJsonObject{};
+    }
+    return doc.object();
 }
