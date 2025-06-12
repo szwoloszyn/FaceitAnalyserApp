@@ -76,12 +76,10 @@ void PlayerDataPanel::setUpProfilePicture(const QString& picture)
             reply->deleteLater();
         });
     }
-    else {
-        QPixmap pixmap(":/profile_pic/resources/def_avatar.jpg");
-        ui->lvlPic->setScaledContents(true);
-        ui->profilePic->setPixmap(pixmap);
-        return;
-    }
+    QPixmap pixmap(":/profile_pic/resources/def_avatar.jpg");
+    ui->lvlPic->setScaledContents(true);
+    ui->profilePic->setPixmap(pixmap);
+    return;
 }
 
 void PlayerDataPanel::setUpLevelPicture(int level)
