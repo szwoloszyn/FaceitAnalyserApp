@@ -20,8 +20,7 @@ MatchStatsWidget::~MatchStatsWidget()
 void MatchStatsWidget::setData(const MatchStats &match)
 {
     ui->stackedWidget->setCurrentWidget(ui->data);
-    // TODO WRITE THIS METHOD
-    //ui->data->setData(match);
+    ui->data->setData(match);
 }
 
 void MatchStatsWidget::setCustomError(const QString &error)

@@ -39,7 +39,7 @@ void MainWindow::requestMatch(const QString &match_id)
     }
     const Player* player = manager->getPlayer();
     if (!player->match_stats.contains(match_id)) {
-        ui->matchStats->setCustomError("Player did not play in given match");
+        ui->matchStats->setCustomError("Player did not play\nin this match");
         return;
     }
     ui->matchStats->setData(player->match_stats.value(match_id));

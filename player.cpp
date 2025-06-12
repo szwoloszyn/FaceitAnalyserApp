@@ -72,20 +72,23 @@ void Player::updateMatches(const QList<QJsonObject> &matchesResponse)
             if (mapsJson.contains(stats.mapName)) {
                 stats.mapPic = mapsJson.value(stats.mapName).toString();
             }
+            stats.isWon = validateWin(match.value("Final Score").toString(),
+                                      match.value("Rounds").toString());
 
             this->match_stats.insert(match_id, stats);
 
             //printing one random match for debug
-            //             if (match.value("Match Id").toString() == "1-0addd094-e685-43ae-908a-47e75cbf4c57/scoreboard") {
-            //                 qDebug() << "rounds: " << stats.rounds << " $ "
-            //                          << "kills: " << stats.kills << " $ "
-            //                          << "deaths: " << stats.deaths
-            //                          << "2x 3x 4x 5x" << stats.double_kills << " " << stats.triple_kills << " " << stats.quad_kills
-            //                          << "kpr" << stats.kpr
-            //                          << "map: " << match.value("Map").toString()
-            //                          << "match id: " << match.value("Match Id").toString();
-            //                 qDebug() << "hltv: " << stats.hltv;
-            //             }
+                        if (match.value("Match Id").toString() == "1-79ff1945-3580-42ea-94dd-8b52c2b42021") {
+                qDebug() << match;
+                            qDebug() << "rounds: " << stats.rounds << " $ "
+                                     << "kills: " << stats.kills << " $ "
+                                     << "deaths: " << stats.deaths
+                                     << "2x 3x 4x 5x" << stats.double_kills << " " << stats.triple_kills << " " << stats.quad_kills
+                                     << "kpr" << stats.kpr
+                                     << "map: " << match.value("Map").toString()
+                                     << "match id: " << match.value("Match Id").toString();
+                            qDebug() << "hltv: " << stats.hltv;
+                        }
         }
     }
 }
@@ -178,4 +181,11 @@ QJsonObject getJsonFromFile(const QString &filepath)
         return QJsonObject{};
     }
     return doc.object();
+}
+
+bool validateWin(const QString &roundsWon, const QString &totalRounds)
+{
+    int roundsWonNumber = roundsWon.toInt();
+    int totalRoundsNumber = totalRounds.toInt();
+    return roundsWonNumber > (totalRoundsNumber / 2);
 }
