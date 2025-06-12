@@ -6,7 +6,7 @@ MatchInputPanel::MatchInputPanel(QWidget *parent)
     , ui(new Ui::MatchInputPanel)
 {
     ui->setupUi(this);
-    ui->matchID->setPlaceholderText("insert nickname here");
+    ui->matchID->setPlaceholderText("insert match id or matchroom link here");
     ui->matchID->setText("");
 
     connect(ui->confirm, &QPushButton::clicked, this, &MatchInputPanel::confirm);
