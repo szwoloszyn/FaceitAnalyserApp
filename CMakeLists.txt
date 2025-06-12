@@ -35,6 +35,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         playerdatapanel.h playerdatapanel.cpp playerdatapanel.ui
         mainwindow.h mainwindow.cpp mainwindow.ui
         matchinputpanel.h matchinputpanel.cpp matchinputpanel.ui
+        matchdatapanel.h matchdatapanel.cpp matchdatapanel.ui
+        matchstatswidget.h matchstatswidget.cpp matchstatswidget.ui
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET FaceitAnalyserApp APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

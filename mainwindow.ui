@@ -50,7 +50,7 @@
        </size>
       </property>
       <widget class="PlayerStatsWidget" name="playerStats"/>
-      <widget class="QWidget" name="matchStats"/>
+      <widget class="MatchStatsWidget" name="matchStats"/>
      </widget>
     </item>
     <item row="1" column="2">
@@ -128,6 +128,12 @@
    <class>PlayerStatsWidget</class>
    <extends>QWidget</extends>
    <header>playerstatswidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MatchStatsWidget</class>
+   <extends>QWidget</extends>
+   <header>matchstatswidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
