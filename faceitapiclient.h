@@ -31,6 +31,10 @@ private:
     QNetworkAccessManager* manager;
     QNetworkReply* currentReply;
     QJsonObject lastResponse;
+
+private:
+    FaceitApiClient(const FaceitApiClient&) = delete;
+    FaceitApiClient& operator=(const FaceitApiClient&) = delete;
 };
 
 #endif // FACEITAPICLIENT_H

@@ -1,13 +1,3 @@
-#include "playerstatsmanager.h"
-#include "playerinputpanel.h"
-#include "playerdatapanel.h"
-#include "playerstatswidget.h"
-#include "matchinputpanel.h"
-#include "matchdatapanel.h"
-#include "matchstatswidget.h"
-#include "mainwindow.h"
-#include "machine.h"
-
 #include <QApplication>
 #include <QString>
 #include <QFile>
@@ -15,11 +5,11 @@
 #include <QDebug>
 #include <QDir>
 
-#ifdef THINKPAD
-QString PATH_TO_KEY = "../FaceitAnalyserApp/key.txt";
-#else
+#include "mainwindow.h"
+
+
 QString PATH_TO_KEY = "../../key.txt";
-#endif
+
 QString loadApiKey(const QString &filename)
 {
     QFile file(filename);
@@ -40,15 +30,10 @@ QString loadApiKey(const QString &filename)
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-
     qDebug() << "Current working dir:" << QDir::currentPath();
 
     QString apiKey = loadApiKey(PATH_TO_KEY);
     qDebug() << apiKey;
-    //PlayerStatsManager w(apiKey);
-    // PlayerStatsWidget panel;
-    // panel.show();
-    // return a.exec();
     MainWindow w{apiKey};
     w.show();
     return a.exec();

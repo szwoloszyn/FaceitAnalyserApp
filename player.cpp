@@ -63,7 +63,8 @@ void Player::updateMatches(const QList<QJsonObject> &matchesResponse)
 
             stats.rounds = match.value("Rounds").toString().toInt();
             stats.hltv = calculateHltv(stats);
-            // WARNING it corrupts match id
+
+            // WARNING it corrupts match id. No idea how to handle bo3's differently
             QString match_id = match.value("Match Id").toString();
             while (match_stats.contains(match_id)) {
                 match_id += "_nmap";
@@ -78,17 +79,17 @@ void Player::updateMatches(const QList<QJsonObject> &matchesResponse)
             this->match_stats.insert(match_id, stats);
 
             //printing one random match for debug
-                        if (match.value("Match Id").toString() == "1-79ff1945-3580-42ea-94dd-8b52c2b42021") {
+            if (match.value("Match Id").toString() == "1-79ff1945-3580-42ea-94dd-8b52c2b42021") {
                 qDebug() << match;
-                            qDebug() << "rounds: " << stats.rounds << " $ "
-                                     << "kills: " << stats.kills << " $ "
-                                     << "deaths: " << stats.deaths
-                                     << "2x 3x 4x 5x" << stats.double_kills << " " << stats.triple_kills << " " << stats.quad_kills
-                                     << "kpr" << stats.kpr
-                                     << "map: " << match.value("Map").toString()
-                                     << "match id: " << match.value("Match Id").toString();
-                            qDebug() << "hltv: " << stats.hltv;
-                        }
+                qDebug() << "rounds: " << stats.rounds << " $ "
+                         << "kills: " << stats.kills << " $ "
+                         << "deaths: " << stats.deaths
+                         << "2x 3x 4x 5x" << stats.double_kills << " " << stats.triple_kills << " " << stats.quad_kills
+                         << "kpr" << stats.kpr
+                         << "map: " << match.value("Map").toString()
+                         << "match id: " << match.value("Match Id").toString();
+                qDebug() << "hltv: " << stats.hltv;
+            }
         }
     }
 }

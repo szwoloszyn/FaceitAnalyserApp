@@ -19,10 +19,8 @@ set(PROJECT_SOURCES
         main.cpp
         playerstatsmanager.cpp
         playerstatsmanager.h
-        #playerstatsmanager.ui
         player.h player.cpp
         faceitapiclient.cpp faceitapiclient.h
-        machine.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

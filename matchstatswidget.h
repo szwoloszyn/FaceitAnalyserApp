@@ -2,6 +2,7 @@
 #define MATCHSTATSWIDGET_H
 
 #include <QWidget>
+
 #include "player.h"
 
 namespace Ui {
@@ -25,6 +26,10 @@ private slots:
     void requestData(const QString& match_id);
 private:
     Ui::MatchStatsWidget *ui;
+
+private:
+    MatchStatsWidget(const MatchStatsWidget&) = delete;
+    MatchStatsWidget& operator=(const MatchStatsWidget&) = delete;
 };
 
 #endif // MATCHSTATSWIDGET_H

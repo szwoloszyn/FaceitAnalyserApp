@@ -24,6 +24,10 @@ private slots:
     void confirm();
 private:
     Ui::PlayerInputPanel *ui;
+
+private:
+    PlayerInputPanel(const PlayerInputPanel&) = delete;
+    PlayerInputPanel& operator=(const PlayerInputPanel&) = delete;
 };
 
 #endif // PLAYERINPUTPANEL_H

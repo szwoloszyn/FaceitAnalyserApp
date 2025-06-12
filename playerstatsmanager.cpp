@@ -13,7 +13,7 @@ PlayerStatsManager::PlayerStatsManager(const QString& apiKey, QObject *parent)
     , statsResponse{QJsonObject()}
     , matchesResponses{QList<QJsonObject>{}}
 {
-    // clicked -> request acc
+    // clicked -> request acc info
     connect(this, &PlayerStatsManager::requestStarted,
             this, &PlayerStatsManager::requestAccInfo);
     // request done -> assign player data to my object
@@ -33,11 +33,11 @@ PlayerStatsManager::PlayerStatsManager(const QString& apiKey, QObject *parent)
     // request done -> asking for next batch
     connect(this->clientForMatches, &FaceitApiClient::playerDataReady,
             this, &PlayerStatsManager::fetchMatchesBatch);
-    // matches assigned -> time to print data onto my screen
+    // matches assigned -> signal window that data is ready
     connect(this, &PlayerStatsManager::matchesReady,
             this, &PlayerStatsManager::reportReadiness);
 
-    // apiError -> print information
+    // apiError -> signal of the error further
     connect(this->clientForAccInfo, &FaceitApiClient::apiError,
             this, &PlayerStatsManager::apiErrorCought);
     connect(this->clientForStats, &FaceitApiClient::apiError,
@@ -125,7 +125,7 @@ void PlayerStatsManager::requestNextMatchesBatch()
     QString url = "https://open.faceit.com/data/v4/players/" +
                   this->player->acc_info.value("player_id") +
                   "/games/cs2/stats";
-    int limit = 100;//qMin(remainingMatches, 100);
+    int limit = 100;
     QMap<QString, QString> parameters {
         {"limit", QString::number(limit)},
         {"offset", QString::number(offset)}

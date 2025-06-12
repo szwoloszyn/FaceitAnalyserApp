@@ -2,9 +2,9 @@
 #define PLAYERSTATSWIDGET_H
 
 #include <QWidget>
-#include "playerdatapanel.h"
-#include "playerinputpanel.h"
+
 #include "player.h"
+
 namespace Ui {
 class PlayerStatsWidget;
 }
@@ -28,6 +28,10 @@ private slots:
     void requestData(const QString& nickname, bool isLast50);
 private:
     Ui::PlayerStatsWidget *ui;
+
+private:
+    PlayerStatsWidget(const PlayerStatsWidget&) = delete;
+    PlayerStatsWidget& operator=(const PlayerStatsWidget&) = delete;
 };
 
 #endif // PLAYERSTATSWIDGET_H

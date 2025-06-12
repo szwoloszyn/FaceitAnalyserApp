@@ -89,7 +89,6 @@ void PlayerDataPanel::setUpLevelPicture(int level)
     QString lvlImg = QString(R"(:/lvl/resources/lvls/%1.png)").arg(level);
     QPixmap pixmap(lvlImg);
     QPixmap scaled = pixmap.scaled(ui->lvlPic->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    //ui->lvlPic->setScaledContents(true);
     ui->lvlPic->setPixmap(scaled);
 }
 
@@ -99,8 +98,7 @@ QString calculateColorForLevel(int elo)
        return "#eeeeee"; // gray
     }
     if (elo < 901) {
-        return "#19ca00"; // green darker
-        return "#1ce400"; // green
+        return "#19ca00"; // green
     }
     if (elo < 1531) {
         return "#ffc800"; // yellow
