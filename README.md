@@ -1,5 +1,13 @@
 # FaceitAnalyserApp
 
+## Table of contents:
+- [Overview](#overview)
+- [Features](#features)
+- [Usage](#usage)
+- [Api Faceit Key](#api-faceit-key)
+- [Compilation](#compilation-using-cmake)
+- [Detailed Overview](#detailed-application-overview)
+
 ## Overview
 
 FaceitAnalyserApp is a C++/Qt6 **GUI application**. It fetches and displays player statistics from [Faceit](www.faceit.com), an esports platform popular in CS2 as an alternative to official in-game matchmaking. It uses faceit api key that can be obtained by anyone with no limits *(Generating own api key explained later on)*
