@@ -16,25 +16,53 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Network)
 
 
 set(PROJECT_SOURCES
-        main.cpp
-        playerstatsmanager.cpp
-        playerstatsmanager.h
-        player.h player.cpp
-        faceitapiclient.cpp faceitapiclient.h
+        src/main.cpp
+        src/player.cpp
+        src/faceitapiclient.cpp
+        src/playerstatsmanager.cpp
+        src/mainwindow.cpp
+        src/playerinputpanel.cpp
+        src/playerdatapanel.cpp
+        src/playerstatswidget.cpp
+        src/matchinputpanel.cpp
+        src/matchdatapanel.cpp
+        src/matchstatswidget.cpp
+)
+set(HEADERS
+    include/player.h
+    include/faceitapiclient.h
+    include/playerstatsmanager.h
+    include/mainwindow.h
+    include/playerinputpanel.h
+    include/playerdatapanel.h
+    include/playerstatswidget.h
+    include/matchinputpanel.h
+    include/matchdatapanel.h
+    include/matchstatswidget.h
 )
 
+set(UIS
+    ui/mainwindow.ui
+    ui/playerinputpanel.ui
+    ui/playerdatapanel.ui
+    ui/playerstatswidget.ui
+    ui/matchinputpanel.ui
+    ui/matchdatapanel.ui
+    ui/matchstatswidget.ui
+)
+
+set(RESOURCES
+    resources.qrc
+)
+
+set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_SOURCE_DIR}/ui)
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(FaceitAnalyserApp
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        faceitapiclient.h faceitapiclient.cpp
-        playerstatswidget.h playerstatswidget.cpp playerstatswidget.ui
-        playerinputpanel.h playerinputpanel.cpp playerinputpanel.ui
-        playerdatapanel.h playerdatapanel.cpp playerdatapanel.ui
-        mainwindow.h mainwindow.cpp mainwindow.ui
-        matchinputpanel.h matchinputpanel.cpp matchinputpanel.ui
-        matchdatapanel.h matchdatapanel.cpp matchdatapanel.ui
-        matchstatswidget.h matchstatswidget.cpp matchstatswidget.ui
+        ${HEADERS}
+        ${UIS}
+        ${RESOURCES}
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET FaceitAnalyserApp APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
@@ -53,6 +81,10 @@ else()
         )
     endif()
 endif()
+
+target_include_directories(FaceitAnalyserApp PRIVATE src)
+target_include_directories(FaceitAnalyserApp PRIVATE include)
+target_include_directories(FaceitAnalyserApp PRIVATE ui)
 
 set(RESOURCE_FILES resources.qrc)
 qt6_add_resources(RESOURCES_RCC ${RESOURCE_FILES})
