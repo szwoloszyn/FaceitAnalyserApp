@@ -1,5 +1,7 @@
 #include "player.h"
 
+const QString MATCHES_WITH_NO_RESPONSE = "10";
+
 Player::Player()
 {
 
@@ -7,7 +9,6 @@ Player::Player()
 
 void Player::updateAccInfo(const QJsonObject& acc)
 {
-
     acc_info.insert("nickname", acc.value("nickname").toString());
     acc_info.insert("player_id", acc.value("player_id").toString());
     acc_info.insert("avatar", acc.value("avatar").toString());
@@ -23,11 +24,17 @@ void Player::updateStats(const QJsonObject &stats)
 {
     PlayerStats lifetime;
     QJsonObject lf_stats = stats.value("lifetime").toObject();
-
     this->acc_info.insert("number_of_matches", lf_stats.value("Matches").toString());
-    this->acc_info.insert("number_of_cs2_matches", lf_stats.value("Total Matches").toString());
+    if (lf_stats.contains("Total Matches")) {
+        this->acc_info.insert("number_of_cs2_matches", lf_stats.value("Total Matches").toString());
+    }
+    else {
+        this->acc_info.insert("number_of_cs2_matches", MATCHES_WITH_NO_RESPONSE);
+    }
     this->lifetime_stats.hs_rate = lf_stats.value("Average Headshots %").toString();
-    this->lifetime_stats.adr = lf_stats.value("ADR").toString();
+    if (lf_stats.contains("ADR")) {
+        this->lifetime_stats.adr = lf_stats.value("ADR").toString();
+    }
     this->lifetime_stats.kdr = lf_stats.value("Average K/D Ratio").toString();
 }
 
@@ -38,7 +45,6 @@ void Player::updateMatches(const QList<QJsonObject> &matchesResponse)
         for (const QJsonValue& matchVal : matches) {
 
             QJsonObject match = matchVal.toObject().value("stats").toObject();
-
             MatchStats stats;
             stats.adr = match.value("ADR").toString().toDouble();
             stats.kdr = match.value("K/D Ratio").toString().toDouble();
@@ -52,6 +58,9 @@ void Player::updateMatches(const QList<QJsonObject> &matchesResponse)
             stats.quad_kills = match.value("Quadro Kills").toString().toInt();
             stats.aces = match.value("Penta Kills").toString().toInt();
 
+            stats.score = match.value("Score").toString();
+            stats.mapName = match.value("Map").toString();
+
             stats.rounds = match.value("Rounds").toString().toInt();
             stats.hltv = calculateHltv(stats);
             // WARNING it corrupts match id
@@ -59,19 +68,27 @@ void Player::updateMatches(const QList<QJsonObject> &matchesResponse)
             while (match_stats.contains(match_id)) {
                 match_id += "_nmap";
             }
+            QJsonObject mapsJson = getJsonFromFile(":/maps/resources/maps.json");
+            if (mapsJson.contains(stats.mapName)) {
+                stats.mapPic = mapsJson.value(stats.mapName).toString();
+            }
+            stats.isWon = validateWin(match.value("Final Score").toString(),
+                                      match.value("Rounds").toString());
+
             this->match_stats.insert(match_id, stats);
 
-            // printing one random match for debug
-            // if (match.value("Match Id").toString() == "1-7bab85e5-3d81-40d2-9f40-21cb87f671f1") {
-            //     qDebug() << "rounds: " << stats.rounds << " $ "
-            //              << "kills: " << stats.kills << " $ "
-            //              << "deaths: " << stats.deaths
-            //              << "2x 3x 4x 5x" << stats.double_kills << " " << stats.triple_kills << " " << stats.quad_kills
-            //              << "kpr" << stats.kpr
-            //              << "map: " << match.value("Map").toString()
-            //              << "match id: " << match.value("Match Id").toString();
-            //     qDebug() << "hltv: " << stats.hltv;
-            // }
+            //printing one random match for debug
+                        if (match.value("Match Id").toString() == "1-79ff1945-3580-42ea-94dd-8b52c2b42021") {
+                qDebug() << match;
+                            qDebug() << "rounds: " << stats.rounds << " $ "
+                                     << "kills: " << stats.kills << " $ "
+                                     << "deaths: " << stats.deaths
+                                     << "2x 3x 4x 5x" << stats.double_kills << " " << stats.triple_kills << " " << stats.quad_kills
+                                     << "kpr" << stats.kpr
+                                     << "map: " << match.value("Map").toString()
+                                     << "match id: " << match.value("Match Id").toString();
+                            qDebug() << "hltv: " << stats.hltv;
+                        }
         }
     }
 }
@@ -93,9 +110,15 @@ void Player::updateLifetimeFromMatches()
     double avgKDR = overallKDR / match_stats.size();
     double avgADR = overallAdr / match_stats.size();
     double avgHLTV = overallHltv / match_stats.size();
-    lifetime_stats.adr = QString::number(avgADR, 'f', 2);
-    lifetime_stats.kdr = QString::number(avgKDR, 'f', 2);
-    lifetime_stats.hltv = QString::number(avgHLTV, 'f', 2);
+    if (avgADR > 0) {
+        lifetime_stats.adr = QString::number(avgADR, 'f', 2);
+    }
+    if (avgKDR > 0) {
+        lifetime_stats.kdr = QString::number(avgKDR, 'f', 2);
+    }
+    if (avgHLTV > 0) {
+        lifetime_stats.hltv = QString::number(avgHLTV, 'f', 2);
+    }
 }
 
 void Player::print() const
@@ -108,6 +131,7 @@ void Player::print() const
     qDebug() << "@" << a.kills << "@";
     qDebug() << "@" << a.assists << "@";
     qDebug() << "@" << a.hltv << "@";
+    qDebug() << "@" << a.mapPic << "@";
     for (QString& key : acc_info.keys()) {
         QString val = acc_info.value(key);
         qDebug() << key << " : " << val;
@@ -133,4 +157,35 @@ double calculateHltv(const MatchStats &stats)
                                               9*stats.triple_kills + 16*stats.quad_kills +
                                               25*stats.aces) / stats.rounds) / avgRMK;
     return (killRating + 0.7*survivalRating + roundsWithMultipleRating) / 2.7;
+}
+
+QJsonObject getJsonFromFile(const QString &filepath)
+{
+    QFile file{filepath};
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qWarning() << "Failed to open resource file!";
+        return QJsonObject{};
+    }
+    QByteArray data = file.readAll();
+    file.close();
+
+    QJsonParseError parseError;
+    QJsonDocument doc = QJsonDocument::fromJson(data, &parseError);
+
+    if (parseError.error != QJsonParseError::NoError) {
+        qWarning() << "parse error: " << parseError.errorString();
+        return QJsonObject{};
+    }
+    if (!doc.isObject()) {
+        qWarning() << "not an object";
+        return QJsonObject{};
+    }
+    return doc.object();
+}
+
+bool validateWin(const QString &roundsWon, const QString &totalRounds)
+{
+    int roundsWonNumber = roundsWon.toInt();
+    int totalRoundsNumber = totalRounds.toInt();
+    return roundsWonNumber > (totalRoundsNumber / 2);
 }

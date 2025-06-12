@@ -1,4 +1,11 @@
-#include "playerstatswindow.h"
+#include "playerstatsmanager.h"
+#include "playerinputpanel.h"
+#include "playerdatapanel.h"
+#include "playerstatswidget.h"
+#include "matchinputpanel.h"
+#include "matchdatapanel.h"
+#include "matchstatswidget.h"
+#include "mainwindow.h"
 #include "machine.h"
 
 #include <QApplication>
@@ -13,7 +20,7 @@ QString PATH_TO_KEY = "../FaceitAnalyserApp/key.txt";
 #else
 QString PATH_TO_KEY = "../../key.txt";
 #endif
-QString loadApiKety(const QString &filename)
+QString loadApiKey(const QString &filename)
 {
     QFile file(filename);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -36,9 +43,13 @@ int main(int argc, char *argv[])
 
     qDebug() << "Current working dir:" << QDir::currentPath();
 
-    QString apiKey = loadApiKety(PATH_TO_KEY);
+    QString apiKey = loadApiKey(PATH_TO_KEY);
     qDebug() << apiKey;
-    PlayerStatsWindow w(apiKey);
+    //PlayerStatsManager w(apiKey);
+    // PlayerStatsWidget panel;
+    // panel.show();
+    // return a.exec();
+    MainWindow w{apiKey};
     w.show();
     return a.exec();
 }

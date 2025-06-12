@@ -1,6 +1,7 @@
-#ifndef PLAYERSTATSWINDOW_H
-#define PLAYERSTATSWINDOW_H
+#ifndef PLAYERSTATSMANAGER_H
+#define PLAYERSTATSMANAGER_H
 
+#include <QObject>
 #include <QWidget>
 #include <QList>
 #include <QTimer>
@@ -8,28 +9,31 @@
 #include "player.h"
 #include "faceitapiclient.h"
 
-QT_BEGIN_NAMESPACE
-namespace Ui { class PlayerStatsWindow; }
-QT_END_NAMESPACE
 
-class PlayerStatsWindow : public QWidget
+class PlayerStatsManager : public QObject
 {
     Q_OBJECT
 
 public:
-    PlayerStatsWindow(const QString& apiKey, QWidget *parent = nullptr);
-    ~PlayerStatsWindow();
+    PlayerStatsManager(const QString& apiKey, QObject *parent = nullptr);
+    ~PlayerStatsManager();
+
+    void changeLast50State(bool isLast50);
+    void startRequest(const QString& nickname);
+    Player* getPlayer() const;
 
 signals:
+    void requestStarted(const QString& nickname);
     void accInfoReady();
-
     void statsReady();
-
     void matchesReady();
+    void allReady();
+
+    void invalidRequest(const QString& error);
 
 private slots:
     void fetchAccInfo();
-    void requestAccInfo();
+    void requestAccInfo(const QString& nickname);
 
     void requestStats();
     void fetchStats();
@@ -37,12 +41,11 @@ private slots:
     void requestMatches();
     void fetchMatchesBatch();
 
-    // WARNING debug-only implementation
-    void updateView();
+    void reportReadiness();
 
-    void apiErrorCought();
+    void apiErrorCought(const QString& error);
 
-    void changeLast50State();
+
 
 private:
     void clear();
@@ -60,7 +63,5 @@ private:
     QJsonObject statsResponse;
     QList<QJsonObject> matchesResponses;
     Player* player;
-
-    Ui::PlayerStatsWindow *ui;
 };
-#endif // PLAYERSTATSWINDOW_H
+#endif // PLAYERSTATSMANAGER_H

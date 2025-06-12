@@ -1,0 +1,24 @@
+<RCC>
+    <qresource prefix="/profile_pic">
+        <file>resources/def_avatar.jpg</file>
+    </qresource>
+    <qresource prefix="/lvl">
+        <file>resources/lvls/10.png</file>
+        <file>resources/lvls/1.png</file>
+        <file>resources/lvls/2.png</file>
+        <file>resources/lvls/3.png</file>
+        <file>resources/lvls/4.png</file>
+        <file>resources/lvls/5.png</file>
+        <file>resources/lvls/6.png</file>
+        <file>resources/lvls/7.png</file>
+        <file>resources/lvls/8.png</file>
+        <file>resources/lvls/9.png</file>
+    </qresource>
+    <qresource prefix="/background_imgs">
+        <file>resources/elobar.png</file>
+        <file>resources/elobar_scaled.png</file>
+    </qresource>
+    <qresource prefix="/maps">
+        <file>resources/maps.json</file>
+    </qresource>
+</RCC>
