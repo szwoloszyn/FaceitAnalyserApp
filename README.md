@@ -10,7 +10,7 @@
 
 ## Overview
 
-FaceitAnalyserApp is a C++/Qt6 **GUI application**. It fetches and displays player statistics from [Faceit](www.faceit.com), an esports platform popular in CS2 as an alternative to official in-game matchmaking. It uses Faceit Api Key that can be obtained by anyone with no limits *(Generating own api key explained later on)*
+FaceitAnalyserApp is a C++/Qt6.7 **GUI application**. It fetches and displays player statistics from [Faceit](www.faceit.com), an esports platform popular in CS2 as an alternative to official in-game matchmaking. It uses Faceit Api Key that can be obtained by anyone with no limits *(Generating own api key explained later on)*
 - Users can analyse player's CS2 statistics.
 - Requires a `nickname` and optionally `match id` or `matchroom link` to generate output.
 - Note that since the application retrieved CS2 data only, any Faceit account with no CS2 matches will be treated as invalid input - there is no data to analyse.
