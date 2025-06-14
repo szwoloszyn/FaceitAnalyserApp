@@ -10,7 +10,7 @@
 
 ## Overview
 
-FaceitAnalyserApp is a C++/Qt6.7 **GUI application**. It fetches and displays player statistics from [Faceit](www.faceit.com), an esports platform popular in CS2 as an alternative to official in-game matchmaking. It uses Faceit Api Key that can be obtained by anyone with no limits *(Generating own api key explained later on)*
+FaceitAnalyserApp is a C++/Qt6.7 **GUI application**. It fetches and displays player statistics from [Faceit](https://www.faceit.com), an esports platform popular in CS2 as an alternative to official in-game matchmaking. It uses Faceit Api Key that can be obtained by anyone with no limits *(Generating own api key explained later on)*
 - Users can analyse player's CS2 statistics.
 - Requires a `nickname` and optionally `match id` or `matchroom link` to generate output.
 - Note that since the application retrieved CS2 data only, any Faceit account with no CS2 matches will be treated as invalid input - there is no data to analyse.
@@ -24,7 +24,7 @@ FaceitAnalyserApp is a C++/Qt6.7 **GUI application**. It fetches and displays pl
     - `level progress bar` - Progress towards the next level.
     - `KDR` - Kill per death ratio.
     - `ADR` - Average damage per round
-    - `HLTV 1.0` - Performance rating used by [hltv.org](www.hltv.org) to assess profesional players' performance. *(Calculation details explained later)*.
+    - `HLTV 1.0` - Performance rating used by [hltv.org](https://hltv.org) to assess profesional players' performance. *(Calculation details explained later)*.
 - Player's data and avarage stats __50 matches back__, containing same data as lifetime
 - Single __match__ statistics:
     - `Map` played in given match.
