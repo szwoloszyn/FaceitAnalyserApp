@@ -15,6 +15,11 @@ FaceitAnalyserApp is a C++/Qt6.7 **GUI application**. It fetches and displays pl
 - Requires a `nickname` and optionally `match id` or `matchroom link` to generate output.
 - Note that since the application retrieved CS2 data only, any Faceit account with no CS2 matches will be treated as invalid input - there is no data to analyse.
 
+
+
+https://github.com/user-attachments/assets/94d9591a-ab79-478c-9077-18612105fbcd
+
+
 ## Features
 
 - Player's __lifetime__ stats and data:
